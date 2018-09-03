@@ -4,11 +4,17 @@
 
 class ExpertSystem {
 public:
+        static ExpertSystem& Instance();
 
 
 
 
 private:
+        ExpertSystem();
+        ~ExpertSystem();
+
+        ExpertSystem(ExpertSystem const &)            = delete;
+        ExpertSystem& operator=(ExpertSystem const &) = delete;
 };
 
 
