@@ -1,12 +1,12 @@
 EXEC=expert
 
-CC = clang
+CC = clang++
 CCFLAGS = -std=c++11 -ferror-limit=5
 #CCFLAGS = -Wall -Wextra -Werror -std=c++11 -ferror-limit=5
 
 SRC_FILE_NAME = main.cpp           \
 				ExpertSystem.cpp   \
-#				ESException.cpp    \
+				ESException.cpp    \
 				
 
 SRC_DIR = src

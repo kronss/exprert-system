@@ -5,10 +5,15 @@ class ExpertSystem {
 public:
         static ExpertSystem& Instance();
 
+        void readInput(int ar, char **av);
+        bool is_regular_file(const char *fileName);
+        void init(int ar, char **av);
 
-
-
+        void usage();
 private:
+        bool verbose_;
+
+
         ExpertSystem();
         ~ExpertSystem();
 
