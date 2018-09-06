@@ -4,7 +4,7 @@
 
 #define RED    "\e[0;31m"
 #define RESSET "\e[0m"
-
+#define NO_STR ""
 
 ESException::ESException(const ESException &cpy)
 : reason_(cpy.reason_),
@@ -19,6 +19,11 @@ ESException::ESException(const Reason &reason, const std::string &details)
   details_(details)
 {}
 
+ESException::ESException(const Reason &reason)
+: reason_(reason),
+  details_(NO_STR)
+{}
+
 const char *ESException::what() const noexcept
 {
     std::string what;
@@ -27,6 +32,7 @@ const char *ESException::what() const noexcept
     {
 		case Reason::OPEN_ERROR:      what = "Open error:  "   ; break;
 		case Reason::FATAL_ERROR:     what = "Fatal error: "   ; break;
+		case Reason::PRINT_USAGE:                              ; break;
 		case Reason::UNKNOWN_ERROR:
 		default:
                                       what = "Unknown error:";

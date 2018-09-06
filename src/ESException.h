@@ -9,6 +9,8 @@ enum Reason
     OPEN_ERROR,
     FATAL_ERROR,
 
+	PRINT_USAGE,
+
     UNKNOWN_ERROR,
 };
 
@@ -16,6 +18,8 @@ enum Reason
 class ESException : public std::exception {
 public:
     ESException(const Reason &reason, const std::string &details);
+    ESException(const Reason &reason);
+
     ~ESException();
     ESException(const ESException &cpy);
 
