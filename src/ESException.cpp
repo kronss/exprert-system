@@ -32,6 +32,7 @@ const char *ESException::what() const noexcept
     {
 		case Reason::OPEN_ERROR:      what = "Open error:  "   ; break;
 		case Reason::FATAL_ERROR:     what = "Fatal error: "   ; break;
+		case Reason::BAD_FILE:       what = "Bad file: "      ; break;
 		case Reason::PRINT_USAGE:                              ; break;
 		case Reason::UNKNOWN_ERROR:
 		default:

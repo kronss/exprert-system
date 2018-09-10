@@ -7,10 +7,11 @@
 
 int main(const int argc, char **argv)
 {
-	debug("Hello world!\n");
+//	debug("Hello world!\n");
     try {
     	ExpertSystem& expertSystem = ExpertSystem::Instance();
     	expertSystem.readInput(argc, argv);
+    	expertSystem.readFromFile();
     } catch (std::exception &e) {
         std::cerr << e.what() << std::endl;
     } catch (...) {
@@ -19,6 +20,6 @@ int main(const int argc, char **argv)
 
 //    system("leaks --queit avm");
 
-	debug("Die hard!\n");
+//	debug("Die hard!\n");
     return 0;
 }

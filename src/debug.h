@@ -4,8 +4,8 @@
 //#include <stdarg.h>
 #include <stdio.h>
 
-#define debug(fmt, ...) \
-        do { if (DEBUG) fprintf(stderr, "%s:%d:%s(): " fmt, __FILE__, \
+#define DBG(fmt, ...) \
+        do { if (DEBUG) fprintf(stderr, "%s:%d:%s(): " fmt "\n", __FILE__, \
                                 __LINE__, __func__, ##__VA_ARGS__); } while (0)
 
 

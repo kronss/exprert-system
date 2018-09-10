@@ -8,6 +8,7 @@ enum Reason
 {
     OPEN_ERROR,
     FATAL_ERROR,
+    BAD_FILE,
 
 	PRINT_USAGE,
 

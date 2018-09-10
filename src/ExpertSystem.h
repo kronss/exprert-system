@@ -7,15 +7,20 @@ class ExpertSystem {
 public:
         static ExpertSystem& Instance();
 
-        void readInput(int ar, char **av);
         void printUsage(const char *);
-        bool isRegularFile(const char *fileName);
         void init(int ar, char **av);
 
+        void readInput(int ar, char **av);
+        void readFromFile();
         void usage();
+
 private:
         bool verbose_;
         std::string fileName_;
+
+        bool RegularFile(const char *fileName);
+        void removeUnusedCharacters(std::string & line);
+        bool lineValid(std::string &line);
 
 
         ExpertSystem();
