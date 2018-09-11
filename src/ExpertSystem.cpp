@@ -107,12 +107,29 @@ bool ExpertSystem::lineValid(std::string &line)
 
 
 //    std::regex emptyLineRegexp("^\\s*$");
-    std::regex test("^[A-Z][A-Z]$");
+    std::regex test("^(!?[A-Z])(=>|<=>)(!?[A-Z](\\+!?[A-Z])*)$");
+//    std::regex test("^(!?[A-Z]\\+|\\||\\^!?[A-Z]*)(=>|<=>)(!?[A-Z](\\+!?[A-Z])*)$");
+    std::regex test1("(^=[A-Z]{0,26}$)");
+    std::regex test2("^\\?[A-Z]{0,26}$");
+
+
 
     regex_search(line, lineMatch, test);
 
     if (regex_search(line, lineMatch, test)) {
-        std::cout << "|" << line << std::endl; //debug
+        std::cout << "OK: " << line << std::endl; //debug
+        std::cout << "    0st: " << lineMatch[0].str() << std::endl;
+        std::cout << "    1st: " << lineMatch[1].str() << std::endl;
+        std::cout << "    2st: " << lineMatch[2].str() << std::endl;
+        std::cout << "    3st: " << lineMatch[3].str() << std::endl;
+        std::cout << "    4st: " << lineMatch[4].str() << std::endl;
+        std::cout << "    5st: " << lineMatch[5].str() << std::endl;
+    } else if (regex_search(line, lineMatch, test1)) {
+        std::cout << "OK: " << line << std::endl; //debug
+    } else if (regex_search(line, lineMatch, test2)) {
+            std::cout << "OK: " << line << std::endl; //debug
+    } else {
+        std::cout << "KO: " << line << std::endl; //debug
     }
 //        std::cout << "|" << line << std::endl; //debug
 //        std::cout << "-" << lineMatch << std::endl; //debug

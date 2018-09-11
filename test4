@@ -1,0 +1,8 @@
+C=>E
+A+B+C=>D
+A|B=>C
+A+!B=>F
+C|!G=>H
+V^W=>X
+A+B=>Y+Z
+
