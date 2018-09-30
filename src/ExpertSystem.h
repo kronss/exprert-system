@@ -2,6 +2,8 @@
 #define EXPERT_SYSTEM_H
 
 #include <string>
+#include <map>
+#include "Fact.hpp"
 
 #define ALWAYSTRUE true
 
@@ -11,6 +13,8 @@ struct Rule {
     std::string asign;
     std::string right;
 };
+
+
 
 
 class ExpertSystem {
@@ -27,6 +31,8 @@ public:
 private:
         bool verbose_;
         std::string fileName_;
+        std::map<char, Fact> FactsMap;
+
 
         bool RegularFile(const char *fileName);
 
@@ -36,8 +42,8 @@ private:
             bool lineQueryFacts(std::string &line);
         bool lineValid(std::string &line);
         void createRule(std::string &line);
-            void readInitFacts(std::string &line);
-            void readQueryFacts(std::string &line);
+//            void readInitFacts(std::string &line);
+//            void readQueryFacts(std::string &line);
 
 
 
