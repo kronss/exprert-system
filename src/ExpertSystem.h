@@ -3,6 +3,16 @@
 
 #include <string>
 
+#define ALWAYSTRUE true
+
+
+struct Rule {
+    std::string left;
+    std::string asign;
+    std::string right;
+};
+
+
 class ExpertSystem {
 public:
         static ExpertSystem& Instance();
@@ -19,8 +29,16 @@ private:
         std::string fileName_;
 
         bool RegularFile(const char *fileName);
+
+        /*work with input*/
         void removeUnusedCharacters(std::string & line);
+            bool lineInitFacts(std::string &line);
+            bool lineQueryFacts(std::string &line);
         bool lineValid(std::string &line);
+        void createRule(std::string &line);
+            void readInitFacts(std::string &line);
+            void readQueryFacts(std::string &line);
+
 
 
         ExpertSystem();

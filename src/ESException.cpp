@@ -30,11 +30,17 @@ const char *ESException::what() const noexcept
 
     switch(reason_)
     {
-		case Reason::OPEN_ERROR:      what = "Open error:  "   ; break;
-		case Reason::FATAL_ERROR:     what = "Fatal error: "   ; break;
-		case Reason::BAD_FILE:       what = "Bad file: "      ; break;
+		case Reason::OPEN_ERROR:      what = "Open error:  "        ; break;
+		case Reason::FATAL_ERROR:     what = "Fatal error: "        ; break;
+		case Reason::BAD_FILE:        what = "Bad file: "           ; break;
+		case Reason::INVAL_TOKEN:     what = "Not supported token: "; break;
+		case Reason::NOT_SUPPORTED:   what = "Unsupported token: "  ; break;
+
+
+
 		case Reason::PRINT_USAGE:                              ; break;
 		case Reason::UNKNOWN_ERROR:
+
 		default:
                                       what = "Unknown error:";
     }

@@ -83,14 +83,20 @@ void ExpertSystem::readFromFile()
         throw ESException(BAD_FILE, fileName_.c_str());
     }
 
+    /*line without unused characters*/
     while (std::getline(fs, line)) {
         lineNbr++;
         removeUnusedCharacters(line);
         //std::cout << lineNbr << "|" << line << std::endl; //debug
         if (line.empty()) {
             continue;
+        } else if (lineInitFacts(line)) {
+            readInitFacts(line);
+        } else if (lineQueryFacts(line)) {
+            readQueryFacts(line);
         } else if (lineValid(line)) {
             //push rules;
+            createRule(line);
         } else {
             throw ESException(BAD_FILE, fileName_.c_str());
         }
@@ -101,6 +107,45 @@ void ExpertSystem::readFromFile()
 /* PRIVATE                                                                    */
 /******************************************************************************/
 
+void ExpertSystem::createRule(std::string &line)
+{
+    std::smatch lineMatch;
+                     /*(   1st    )( 2nd  )(   3rd    )                */
+    std::regex test4("^([A-Z!+|^]*)(<=>|=>)([A-Z!+|^]*)$"); /*tokenyzer*/
+    std::string tmp;
+    regex_search(line, lineMatch, test4);
+
+    std::cout << "    ----0st: " << lineMatch[0].str() << std::endl;
+    std::cout << "    ----1st: " << lineMatch[1].str() << std::endl;
+    std::cout << "    ----2st: " << lineMatch[2].str() << std::endl;
+    std::cout << "    ----3st: " << lineMatch[3].str() << std::endl;
+
+    /*check rules*/
+
+    if (lineMatch[2].str() == "<=>")
+        throw ESException(NOT_SUPPORTED, lineMatch[2].str());
+
+    if () {
+
+    }
+
+
+
+
+
+}
+
+bool ExpertSystem::lineInitFacts(std::string &line)
+{
+    bool ret = false;
+    //    std::regex test1("(^=[A-Z]{0,26}$)");
+
+
+
+
+    return ret;
+}
+
 bool ExpertSystem::lineValid(std::string &line)
 {
     std::smatch lineMatch;
@@ -108,14 +153,12 @@ bool ExpertSystem::lineValid(std::string &line)
 //    std::regex emptyLineRegexp("^\\s*$");
 //    std::regex test("^(!?[A-Z])(=>|<=>)(!?[A-Z](\\+!?[A-Z])*)$");
 //    std::regex test("^(!?[A-Z]\\+|\\||\\^!?[A-Z]*)(=>|<=>)(!?[A-Z](\\+!?[A-Z])*)$");
-//    std::regex test1("(^=[A-Z]{0,26}$)");
 //    std::regex test2("^\\?[A-Z]{0,26}$");
 
 //v1
     std::regex test1("^(!?[A-Z])(=>|<=>)(!?[A-Z](\\+!?[A-Z])*)$"); //    Для тех где слева одна буква
     std::regex test2("^(!?[A-Z](\\+!?[A-Z])+)(=>|<=>)(!?[A-Z](\\+!?[A-Z])*)$"); // Для плюсов
     std::regex test3("^(!?[A-Z](\\+|\\||\\^)!?[A-Z])(=>|<=>)(!?[A-Z](\\+!?[A-Z])*)$"); // Для других операций
-    std::regex test4("^([A-Z!+|^]*)(<=>|=>)([A-Z!+|^]*)$");
 
 
 
@@ -127,8 +170,10 @@ bool ExpertSystem::lineValid(std::string &line)
         std::cout << "OK3: " << line << std::endl; //debug
     } else {
         std::cout << "KO: " << line << std::endl; //debug
-        goto out;
+//        throw ESException(INVAL_TOKEN, line); /*TODO: uncoment*/
+        goto done; /*TODO: remove hack*/
     }
+
 
     std::cout << "    0st: " << lineMatch[0].str() << std::endl;
     std::cout << "    1st: " << lineMatch[1].str() << std::endl;
@@ -137,17 +182,9 @@ bool ExpertSystem::lineValid(std::string &line)
     std::cout << "    4st: " << lineMatch[4].str() << std::endl;
     std::cout << "    5st: " << lineMatch[5].str() << std::endl;
 
-    regex_search(line, lineMatch, test4);
-    std::cout << "    ----0st: " << lineMatch[0].str() << std::endl;
-    std::cout << "    ----1st: " << lineMatch[1].str() << std::endl;
-    std::cout << "    ----2st: " << lineMatch[2].str() << std::endl;
-    std::cout << "    ----3st: " << lineMatch[3].str() << std::endl;
 
-
-
-
-out:
-    return true;//hack
+done: /*TODO: remove hack*/
+    return ALWAYSTRUE;
 }
 
 void ExpertSystem::removeUnusedCharacters(std::string & line)

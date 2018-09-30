@@ -10,6 +10,10 @@ enum Reason
     FATAL_ERROR,
     BAD_FILE,
 
+    INVAL_TOKEN,
+
+    NOT_SUPPORTED,
+
 	PRINT_USAGE,
 
     UNKNOWN_ERROR,
