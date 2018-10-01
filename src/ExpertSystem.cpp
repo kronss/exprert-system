@@ -93,9 +93,8 @@ void ExpertSystem::readFromFile()
             continue;
         } else if (lineInitFacts(line)) {
         	//change state PC
-//            readInitFacts(line);
-//        } else if (lineQueryFacts(line)) {
-//            readQueryFacts(line);
+        } else if (lineQueryFacts(line)) {
+        	//change state PC
         } else if (lineValid(line)) {
             //push rules;
             createRule(line);
@@ -140,18 +139,15 @@ bool ExpertSystem::lineInitFacts(std::string &line)
 {
     bool ret = false;
     std::smatch lineMatch;
-    std::regex test1("^=([A-Z]{0,26}$)");
-    std::string::const_iterator iter = line.begin();
-    std::string::const_iterator end = line.end();
+    std::regex initialFactsRegExp("^=([A-Z]{0,26}$)");
 
-    if (regex_search(line, lineMatch, test1)) {
+    if (regex_search(line, lineMatch, initialFactsRegExp)) {
     	std::cout << "OK initial: " << lineMatch[1].str() << std::endl; //debug;
     	ret = true;
 
     	/*create initial facts*/
     	std::string lineTmp = lineMatch[1].str();
     	for(std::string::iterator it = lineTmp.begin(); it != lineTmp.end(); ++it) {
-
     		/*have only A..Z characters*/
     		FactsMap_.insert(std::make_pair(*it, INITIAL));
     	}
@@ -162,7 +158,35 @@ bool ExpertSystem::lineInitFacts(std::string &line)
 		}
 		*/
     }
+
     return ret;
+}
+
+bool ExpertSystem::lineQueryFacts(std::string &line)
+{
+    bool ret = false;
+    std::smatch lineMatch;
+    std::regex test2("^\\?([A-Z]{0,26}$)");
+
+    if (regex_search(line, lineMatch, test2)) {
+//    	std::cout << "OK Query: " << lineMatch[1].str() << std::endl; //debug;
+    	ret = true;
+
+    	/*create query list*/
+    	std::string lineTmp = lineMatch[1].str();
+    	for(std::string::iterator it = lineTmp.begin(); it != lineTmp.end(); ++it) {
+    		/*have only A..Z characters*/
+    		QueriesList_.emplace_back(*it);
+    	}
+
+    	/*//debug
+		for(Queries::const_iterator it = QueriesList_.begin(); it != QueriesList_.end(); ++it) {
+			std::cout << *it << std::endl;
+		}
+    	 */
+    }
+
+	return ret;
 }
 
 bool ExpertSystem::lineValid(std::string &line)
@@ -172,14 +196,11 @@ bool ExpertSystem::lineValid(std::string &line)
 //    std::regex emptyLineRegexp("^\\s*$");
 //    std::regex test("^(!?[A-Z])(=>|<=>)(!?[A-Z](\\+!?[A-Z])*)$");
 //    std::regex test("^(!?[A-Z]\\+|\\||\\^!?[A-Z]*)(=>|<=>)(!?[A-Z](\\+!?[A-Z])*)$");
-//    std::regex test2("^\\?[A-Z]{0,26}$");
 
 //v1
     std::regex test1("^(!?[A-Z])(=>|<=>)(!?[A-Z](\\+!?[A-Z])*)$"); //    Для тех где слева одна буква
     std::regex test2("^(!?[A-Z](\\+!?[A-Z])+)(=>|<=>)(!?[A-Z](\\+!?[A-Z])*)$"); // Для плюсов
     std::regex test3("^(!?[A-Z](\\+|\\||\\^)!?[A-Z])(=>|<=>)(!?[A-Z](\\+!?[A-Z])*)$"); // Для других операций
-
-
 
     if        (regex_search(line, lineMatch, test1)) {
         std::cout << "OK1: " << line << std::endl; //debug
@@ -193,14 +214,12 @@ bool ExpertSystem::lineValid(std::string &line)
         goto done; /*TODO: remove hack*/
     }
 
-
     std::cout << "    0st: " << lineMatch[0].str() << std::endl;
     std::cout << "    1st: " << lineMatch[1].str() << std::endl;
     std::cout << "    2st: " << lineMatch[2].str() << std::endl;
     std::cout << "    3st: " << lineMatch[3].str() << std::endl;
     std::cout << "    4st: " << lineMatch[4].str() << std::endl;
     std::cout << "    5st: " << lineMatch[5].str() << std::endl;
-
 
 done: /*TODO: remove hack*/
     return ALWAYSTRUE;

@@ -39,7 +39,7 @@ private:
         /*work with input*/
         void removeUnusedCharacters(std::string & line);
         bool lineInitFacts(std::string &line);
-            bool lineQueryFacts(std::string &line);
+        bool lineQueryFacts(std::string &line);
         bool lineValid(std::string &line);
         void createRule(std::string &line);
 
