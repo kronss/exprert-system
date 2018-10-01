@@ -106,13 +106,13 @@ void ExpertSystem::readFromFile()
         }
     }
 
-//    std::cout << "------------------------------------" << std::endl;
-//    for (auto const& i : RulesList_) {
-//        std::cout << i.getLeft() << std::endl;
-//        std::cout << i.getInference() << std::endl;
-//        std::cout << i.getRight() << std::endl;
-//        std::cout << "------------------------------------" << std::endl;
-//    }
+    std::cout << "------------------------------------" << std::endl;
+    for (auto const& i : RulesList_) {
+        std::cout << i.getLeft() << std::endl;
+        std::cout << i.getInference() << std::endl;
+        std::cout << i.getRight() << std::endl;
+        std::cout << "------------------------------------" << std::endl;
+    }
 
 
 
@@ -144,9 +144,6 @@ void ExpertSystem::createRule(std::string &line)
 
     RulesList_.emplace_back(Rule(lineMatch[1].str(), lineMatch[2].str(), lineMatch[3].str()));
 //    RulesList_.push_back(lineMatch[1].str(), lineMatch[2].str(), lineMatch[3].str());
-
-
-
 }
 
 /*

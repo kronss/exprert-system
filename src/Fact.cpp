@@ -7,10 +7,10 @@
 /******************************************************************************/
 /* PUBLIC                                                                     */
 /******************************************************************************/
-Fact::Fact(enum initialFact init)
+Fact::Fact(enum initialFactStatus init)
 :
 initial_(init),
-condition_(init == INITIAL ? TRUE_FACT : FALSE_FACT)
+condition_(init == INITIAL ? eTRUE : eFALSE)
 {}
 
 Fact::~Fact()
@@ -26,7 +26,7 @@ Fact& Fact::operator = (Fact const &rval)
 {
 	if (this != &rval)
 	{
-	   *this = rval;
+	    *this = rval;
 	}
 	return *this;
 }
@@ -41,9 +41,9 @@ bool Fact::getCondition() const
 	return condition_;
 }
 
-void Fact::setCondition(enum factStatus newStatus)
+void Fact::setCondition(enum eFactValue newStatus)
 {
-	if (initial_ && newStatus == FALSE_FACT) {
+	if (initial_ && newStatus == eTRUE) {
 		/*trying reassign initial fact, ignored*/
 		return;
 //		throw (ESException(REASSIGN_INIT));

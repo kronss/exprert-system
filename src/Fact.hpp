@@ -9,22 +9,23 @@
 
 class Fact;
 
-enum initialFact {
-	DEFAULT = 0, /*false*/
-	INITIAL,     /*true always! Does not reassign*/
+enum initialFactStatus {
+	INITIAL = 0,  /*true always! Does not reassign*/
+	DEFAULT,      /*false*/
 };
 
-enum factStatus {
-	FALSE_FACT = 0,
-	TRUE_FACT = 1,
+enum eFactValue {
+	eTRUE = 0,
+	eFALSE,
+	eUNKNOWN,
 };
 
-typedef std::map<const char, Fact> Facts;		/*initial true facts*/
+typedef std::map<const char, Fact> Facts;    /*initial true facts*/
 typedef std::list<const char> Queries;
 
 class Fact {
 public:
-	Fact(enum initialFact init = DEFAULT);
+	Fact(enum initialFactStatus init = DEFAULT);
     ~Fact();
 
     Fact(Fact const &);
@@ -33,7 +34,7 @@ public:
     bool getIsInitial() const;
     bool getCondition() const;
 
-    void setCondition(enum factStatus newStatus);
+    void setCondition(enum eFactValue newStatus);
 
 private:
     const bool initial_;
