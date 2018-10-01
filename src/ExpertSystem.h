@@ -4,18 +4,6 @@
 #include <string>
 #include "Fact.hpp"
 
-#define ALWAYSTRUE true
-
-
-struct Rule {
-    std::string left;
-    std::string asign;
-    std::string right;
-};
-
-
-
-
 class ExpertSystem {
 public:
         static ExpertSystem& Instance();
@@ -33,6 +21,7 @@ private:
 
         Facts FactsMap_;
         Queries QueriesList_;
+        Rules RulesList_;
 
         bool RegularFile(const char *fileName);
 

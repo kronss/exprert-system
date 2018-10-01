@@ -8,6 +8,7 @@ SRC_FILE_NAME = main.cpp           \
 				ExpertSystem.cpp   \
 				ESException.cpp    \
 				Fact.cpp           \
+				Rule.cpp           \
 
 SRC_DIR = src
 SRC = $(addprefix $(SRC_DIR)/, $(SRC_FILE_NAME))

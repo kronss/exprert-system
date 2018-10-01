@@ -1,6 +1,8 @@
 #ifndef FACT_H
 #define FACT_H
 
+#include "Rule.hpp"
+
 #include <string>
 #include <map>
 #include <list>

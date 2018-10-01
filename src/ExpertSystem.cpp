@@ -88,20 +88,37 @@ void ExpertSystem::readFromFile()
         lineNbr++;
         removeUnusedCharacters(line);
 
-        //std::cout << lineNbr << "|" << line << std::endl; //debug
+        std::cout << lineNbr << ". " << line << std::endl; //debug
         if (line.empty()) {
-            continue;
+            continue ;
         } else if (lineInitFacts(line)) {
         	//change state PC
         } else if (lineQueryFacts(line)) {
         	//change state PC
         } else if (lineValid(line)) {
             //push rules;
+//        	std::cout << lineNbr << ". dick" << std::endl; //debug
             createRule(line);
         } else {
-            throw ESException(BAD_FILE, fileName_.c_str());
+        	continue;
+//        	std::cout << lineNbr << ". dick" << std::endl; //debug
+//            throw ESException(BAD_FILE, fileName_.c_str()); //TODO: rework this
         }
     }
+
+//    std::cout << "------------------------------------" << std::endl;
+//    for (auto const& i : RulesList_) {
+//        std::cout << i.getLeft() << std::endl;
+//        std::cout << i.getInference() << std::endl;
+//        std::cout << i.getRight() << std::endl;
+//        std::cout << "------------------------------------" << std::endl;
+//    }
+
+
+
+
+
+
 }
 
 /******************************************************************************/
@@ -110,26 +127,26 @@ void ExpertSystem::readFromFile()
 
 void ExpertSystem::createRule(std::string &line)
 {
-//    std::smatch lineMatch;
-//                     /*(   1st    )( 2nd  )(   3rd    )                */
-//    std::regex test4("^([A-Z!+|^]*)(<=>|=>)([A-Z!+|^]*)$"); /*tokenyzer*/
-//    std::string tmp;
-//    regex_search(line, lineMatch, test4);
-//
-//    std::cout << "    ----0st: " << lineMatch[0].str() << std::endl;
-//    std::cout << "    ----1st: " << lineMatch[1].str() << std::endl;
-//    std::cout << "    ----2st: " << lineMatch[2].str() << std::endl;
-//    std::cout << "    ----3st: " << lineMatch[3].str() << std::endl;
-//
-//    /*check rules*/
-//
-//    if (lineMatch[2].str() == "<=>")
-//        throw ESException(NOT_SUPPORTED, lineMatch[2].str());
-//
-////    if () {
-////
-////    }
-//
+    std::smatch lineMatch;
+                     /*(   1st    )( 2nd  )(   3rd    )*/
+    std::regex test4("^([A-Z!+|^]*)(<=>|=>)([A-Z!+|^]*)$"); /*tokenyzer*/
+    std::string tmp;
+    enum eInference inference;
+
+    regex_search(line, lineMatch, test4);
+
+    std::cout << "    ----0st: " << lineMatch[0].str() << std::endl;
+    std::cout << "    ----1st: " << lineMatch[1].str() << std::endl;
+    std::cout << "    ----2st: " << lineMatch[2].str() << std::endl;
+    std::cout << "    ----3st: " << lineMatch[3].str() << std::endl;
+
+
+
+    RulesList_.emplace_back(Rule(lineMatch[1].str(), lineMatch[2].str(), lineMatch[3].str()));
+//    RulesList_.push_back(lineMatch[1].str(), lineMatch[2].str(), lineMatch[3].str());
+
+
+
 }
 
 /*
@@ -169,7 +186,7 @@ bool ExpertSystem::lineQueryFacts(std::string &line)
     std::regex test2("^\\?([A-Z]{0,26}$)");
 
     if (regex_search(line, lineMatch, test2)) {
-//    	std::cout << "OK Query: " << lineMatch[1].str() << std::endl; //debug;
+    	std::cout << "OK Query: " << lineMatch[1].str() << std::endl; //debug;
     	ret = true;
 
     	/*create query list*/
@@ -191,6 +208,7 @@ bool ExpertSystem::lineQueryFacts(std::string &line)
 
 bool ExpertSystem::lineValid(std::string &line)
 {
+	bool ret = true;
     std::smatch lineMatch;
 
 //    std::regex emptyLineRegexp("^\\s*$");
@@ -203,26 +221,31 @@ bool ExpertSystem::lineValid(std::string &line)
     std::regex test3("^(!?[A-Z](\\+|\\||\\^)!?[A-Z])(=>|<=>)(!?[A-Z](\\+!?[A-Z])*)$"); // Для других операций
 
     if        (regex_search(line, lineMatch, test1)) {
-        std::cout << "OK1: " << line << std::endl; //debug
+//        std::cout << "OK1: " << line << std::endl; //debug
+    	goto done;
     } else if (regex_search(line, lineMatch, test2)) {
-        std::cout << "OK2: " << line << std::endl; //debug
+//        std::cout << "OK2: " << line << std::endl; //debug
+    	goto done;
     } else if (regex_search(line, lineMatch, test3)) {
-        std::cout << "OK3: " << line << std::endl; //debug
+//        std::cout << "OK3: " << line << std::endl; //debug
+    	goto done;
     } else {
-        std::cout << "KO: " << line << std::endl; //debug
+//        std::cout << "KO: " << line << std::endl; //debug
 //        throw ESException(INVAL_TOKEN, line); /*TODO: uncoment*/
-        goto done; /*TODO: remove hack*/
+        goto err; /*TODO: remove hack*/
     }
 
-    std::cout << "    0st: " << lineMatch[0].str() << std::endl;
-    std::cout << "    1st: " << lineMatch[1].str() << std::endl;
-    std::cout << "    2st: " << lineMatch[2].str() << std::endl;
-    std::cout << "    3st: " << lineMatch[3].str() << std::endl;
-    std::cout << "    4st: " << lineMatch[4].str() << std::endl;
-    std::cout << "    5st: " << lineMatch[5].str() << std::endl;
+//    std::cout << "    0st: " << lineMatch[0].str() << std::endl;
+//    std::cout << "    1st: " << lineMatch[1].str() << std::endl;
+//    std::cout << "    2st: " << lineMatch[2].str() << std::endl;
+//    std::cout << "    3st: " << lineMatch[3].str() << std::endl;
+//    std::cout << "    4st: " << lineMatch[4].str() << std::endl;
+//    std::cout << "    5st: " << lineMatch[5].str() << std::endl;
 
-done: /*TODO: remove hack*/
-    return ALWAYSTRUE;
+err:
+	ret = false;
+done:
+    return ret;
 }
 
 void ExpertSystem::removeUnusedCharacters(std::string & line)
@@ -235,7 +258,6 @@ void ExpertSystem::removeUnusedCharacters(std::string & line)
     /*remove whitespace characters*/
     line.erase(std::remove_if(line.begin(), line.end(), isspace), line.end());
 }
-
 
 ExpertSystem::ExpertSystem() :
 verbose_(false)

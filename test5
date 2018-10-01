@@ -7,7 +7,5 @@ V ^ W => X
 A + B => Y + Z
 C | D => X | V
 E + F => !V
-A + B <=> C
-A + B <=> !C
-=AAA
-?
+=A
+?B
