@@ -9,13 +9,12 @@ enum Reason
     OPEN_ERROR,
     FATAL_ERROR,
     BAD_FILE,
-
     INVAL_TOKEN,
-
     NOT_SUPPORTED,
+/*fact*/
+	REASSIGN_INIT,
 
-	PRINT_USAGE,
-
+    PRINT_USAGE,
     UNKNOWN_ERROR,
 };
 

@@ -87,13 +87,15 @@ void ExpertSystem::readFromFile()
     while (std::getline(fs, line)) {
         lineNbr++;
         removeUnusedCharacters(line);
+
         //std::cout << lineNbr << "|" << line << std::endl; //debug
         if (line.empty()) {
             continue;
         } else if (lineInitFacts(line)) {
-            readInitFacts(line);
-        } else if (lineQueryFacts(line)) {
-            readQueryFacts(line);
+        	//change state PC
+//            readInitFacts(line);
+//        } else if (lineQueryFacts(line)) {
+//            readQueryFacts(line);
         } else if (lineValid(line)) {
             //push rules;
             createRule(line);
@@ -109,26 +111,26 @@ void ExpertSystem::readFromFile()
 
 void ExpertSystem::createRule(std::string &line)
 {
-    std::smatch lineMatch;
-                     /*(   1st    )( 2nd  )(   3rd    )                */
-    std::regex test4("^([A-Z!+|^]*)(<=>|=>)([A-Z!+|^]*)$"); /*tokenyzer*/
-    std::string tmp;
-    regex_search(line, lineMatch, test4);
-
-    std::cout << "    ----0st: " << lineMatch[0].str() << std::endl;
-    std::cout << "    ----1st: " << lineMatch[1].str() << std::endl;
-    std::cout << "    ----2st: " << lineMatch[2].str() << std::endl;
-    std::cout << "    ----3st: " << lineMatch[3].str() << std::endl;
-
-    /*check rules*/
-
-    if (lineMatch[2].str() == "<=>")
-        throw ESException(NOT_SUPPORTED, lineMatch[2].str());
-
-    if () {
-
-    }
-
+//    std::smatch lineMatch;
+//                     /*(   1st    )( 2nd  )(   3rd    )                */
+//    std::regex test4("^([A-Z!+|^]*)(<=>|=>)([A-Z!+|^]*)$"); /*tokenyzer*/
+//    std::string tmp;
+//    regex_search(line, lineMatch, test4);
+//
+//    std::cout << "    ----0st: " << lineMatch[0].str() << std::endl;
+//    std::cout << "    ----1st: " << lineMatch[1].str() << std::endl;
+//    std::cout << "    ----2st: " << lineMatch[2].str() << std::endl;
+//    std::cout << "    ----3st: " << lineMatch[3].str() << std::endl;
+//
+//    /*check rules*/
+//
+//    if (lineMatch[2].str() == "<=>")
+//        throw ESException(NOT_SUPPORTED, lineMatch[2].str());
+//
+////    if () {
+////
+////    }
+//
 
 
 
@@ -138,10 +140,37 @@ void ExpertSystem::createRule(std::string &line)
 bool ExpertSystem::lineInitFacts(std::string &line)
 {
     bool ret = false;
-    //    std::regex test1("(^=[A-Z]{0,26}$)");
+    std::smatch lineMatch;
+    std::regex test1("^=([A-Z]{0,26}$)");
+    std::string::const_iterator iter = line.begin();
+    std::string::const_iterator end = line.end();
 
+    if (regex_search(line, lineMatch, test1)) {
+    	std::cout << "OK initial: " << lineMatch[1].str() << std::endl; //debug;
 
+    	/*create initial facts*/
+    	std::string lineTmp = lineMatch[1].str();
+    	{
+    		for(std::string::iterator it = lineTmp.begin(); it != lineTmp.end(); ++it) {
+    		    //do_things_with(*it);
+    			/*have only A..Z characters*/
+//    			std::cout << *it << std::endl;
+    			FactsMap.insert(std::make_pair(*it, INITIAL));
 
+//    			FactsMap[*it] = INITIAL;
+
+    		}
+    	}
+
+//
+    	for(std::map<char, Fact>::const_iterator it = FactsMap.begin(); it != FactsMap.end(); ++it) {
+        		    //do_things_with(*it);
+        			/*have only A-Z characters*/
+    			std::cout << it->first << std::endl;
+    			std::cout << it->second.getCondition() << std::endl;
+
+        		}
+    }
 
     return ret;
 }

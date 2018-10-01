@@ -7,7 +7,7 @@ CCFLAGS = -std=c++11 -ferror-limit=5
 SRC_FILE_NAME = main.cpp           \
 				ExpertSystem.cpp   \
 				ESException.cpp    \
-				
+				Fact.cpp           \
 
 SRC_DIR = src
 SRC = $(addprefix $(SRC_DIR)/, $(SRC_FILE_NAME))
