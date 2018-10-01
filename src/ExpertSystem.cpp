@@ -131,12 +131,11 @@ void ExpertSystem::createRule(std::string &line)
 ////
 ////    }
 //
-
-
-
-
 }
 
+/*
+ * create initial facts
+ */
 bool ExpertSystem::lineInitFacts(std::string &line)
 {
     bool ret = false;
@@ -147,31 +146,22 @@ bool ExpertSystem::lineInitFacts(std::string &line)
 
     if (regex_search(line, lineMatch, test1)) {
     	std::cout << "OK initial: " << lineMatch[1].str() << std::endl; //debug;
+    	ret = true;
 
     	/*create initial facts*/
     	std::string lineTmp = lineMatch[1].str();
-    	{
-    		for(std::string::iterator it = lineTmp.begin(); it != lineTmp.end(); ++it) {
-    		    //do_things_with(*it);
-    			/*have only A..Z characters*/
-//    			std::cout << *it << std::endl;
-    			FactsMap.insert(std::make_pair(*it, INITIAL));
+    	for(std::string::iterator it = lineTmp.begin(); it != lineTmp.end(); ++it) {
 
-//    			FactsMap[*it] = INITIAL;
-
-    		}
+    		/*have only A..Z characters*/
+    		FactsMap_.insert(std::make_pair(*it, INITIAL));
     	}
-
-//
-    	for(std::map<char, Fact>::const_iterator it = FactsMap.begin(); it != FactsMap.end(); ++it) {
-        		    //do_things_with(*it);
-        			/*have only A-Z characters*/
-    			std::cout << it->first << std::endl;
-    			std::cout << it->second.getCondition() << std::endl;
-
-        		}
+    	/*//debug
+		for(Facts::const_iterator it = FactsMap_.begin(); it != FactsMap_.end(); ++it) {
+			std::cout << it->first << std::endl;
+			std::cout << it->second.getCondition() << std::endl;
+		}
+		*/
     }
-
     return ret;
 }
 

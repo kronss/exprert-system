@@ -2,7 +2,6 @@
 #define EXPERT_SYSTEM_H
 
 #include <string>
-#include <map>
 #include "Fact.hpp"
 
 #define ALWAYSTRUE true
@@ -31,19 +30,18 @@ public:
 private:
         bool verbose_;
         std::string fileName_;
-        std::map<char, Fact> FactsMap;
 
+        Facts FactsMap_;
+        Queries QueriesList_;
 
         bool RegularFile(const char *fileName);
 
         /*work with input*/
         void removeUnusedCharacters(std::string & line);
-            bool lineInitFacts(std::string &line);
+        bool lineInitFacts(std::string &line);
             bool lineQueryFacts(std::string &line);
         bool lineValid(std::string &line);
         void createRule(std::string &line);
-//            void readInitFacts(std::string &line);
-//            void readQueryFacts(std::string &line);
 
 
 
