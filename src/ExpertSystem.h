@@ -2,7 +2,11 @@
 #define EXPERT_SYSTEM_H
 
 #include <string>
-#include "Fact.hpp"
+
+#include "Fact.h"
+//#include "Rule.h"
+
+
 
 class ExpertSystem {
 public:
@@ -13,15 +17,17 @@ public:
 
         void readInput(int ar, char **av);
         void readFromFile();
+        void prepareEngine();
+
         void usage();
 
 private:
         bool verbose_;
         std::string fileName_;
 
-        Facts FactsMap_;
+        Facts FactsMap_;   /* TODO: unused? Redesign */
         Queries QueriesList_;
-        Rules RulesList_;
+        Rules Rules_;
 
         bool RegularFile(const char *fileName);
 
@@ -31,6 +37,11 @@ private:
         bool lineQueryFacts(std::string &line);
         bool lineValid(std::string &line);
         void createRule(std::string &line);
+
+        /*work with matrix*/
+        void printMatrix();
+
+
 
 
 

@@ -106,20 +106,33 @@ void ExpertSystem::readFromFile()
         }
     }
 
-    std::cout << "------------------------------------" << std::endl;
-    for (auto const& i : RulesList_) {
-        std::cout << i.getLeft() << std::endl;
-        std::cout << i.getInference() << std::endl;
-        std::cout << i.getRight() << std::endl;
-        std::cout << "------------------------------------" << std::endl;
-    }
+//    std::cout << "------------------------------------" << std::endl;
+//    for (auto const& i : Rules_) {
+//        std::cout << i.getLeft() << std::endl;
+//        std::cout << i.getInference() << std::endl;
+//        std::cout << i.getRight() << std::endl;
+//        std::cout << "------------------------------------" << std::endl;
+//    }
+}
 
 
-
+void ExpertSystem::prepareEngine()
+{
+//	std::map<char, int> adjacency;
+	printMatrix();
 
 
 
 }
+
+void ExpertSystem::printMatrix() {
+  for (Rule& r: Rules_) {
+    for (auto& p : r.getAdjacency()) {
+      std::cout << p.first << p.second << std::endl;
+    }
+  }
+}
+
 
 /******************************************************************************/
 /* PRIVATE                                                                    */
@@ -135,15 +148,16 @@ void ExpertSystem::createRule(std::string &line)
 
     regex_search(line, lineMatch, test4);
 
-    std::cout << "    ----0st: " << lineMatch[0].str() << std::endl;
-    std::cout << "    ----1st: " << lineMatch[1].str() << std::endl;
-    std::cout << "    ----2st: " << lineMatch[2].str() << std::endl;
-    std::cout << "    ----3st: " << lineMatch[3].str() << std::endl;
+    std::cout << "    ----0st: " << lineMatch[FULL_STRING].str() << std::endl;
+    std::cout << "    ----1st: " << lineMatch[LEFT_PART].str()   << std::endl;
+    std::cout << "    ----2st: " << lineMatch[INFERENCE].str()   << std::endl;
+    std::cout << "    ----3st: " << lineMatch[RIGHT_PART].str()  << std::endl;
 
 
 
-    RulesList_.emplace_back(Rule(lineMatch[1].str(), lineMatch[2].str(), lineMatch[3].str()));
-//    RulesList_.push_back(lineMatch[1].str(), lineMatch[2].str(), lineMatch[3].str());
+    Rules_.emplace_back(Rule(lineMatch[LEFT_PART].str(),
+    						 lineMatch[INFERENCE].str(),
+							 lineMatch[RIGHT_PART].str()));
 }
 
 /*
