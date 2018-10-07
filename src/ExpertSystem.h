@@ -25,7 +25,7 @@ private:
         bool verbose_;
         std::string fileName_;
 
-        Facts FactsMap_;   /* TODO: unused? Redesign */
+        allFacts allFacts_;
         Queries QueriesList_;
         Rules Rules_;
 

@@ -3,6 +3,7 @@
 
 #include "ESException.h"
 
+#include <iostream>
 #include <cctype> /*isupper*/
 
 /******************************************************************************/
@@ -19,8 +20,13 @@ Rule::Rule(std::string left, std::string inference, std::string right)
 , right_(right)
 //, adjacency_(createAdjency(fullString))
 {
+	validateLeft();
+//	validateInference();
+//	validateRight();
+
 	createAdjacency();
 
+	createExpression();
 }
 
 Rule::Rule(Rule const & rhs)
@@ -68,6 +74,17 @@ Adjacency const & Rule::getAdjacency() const
 	return adjacency_;
 }
 
+Expression const & Rule::getExpressionLeft() const
+{
+	return expressionLeft_;
+}
+
+Expression const & Rule::getExpressionRight() const
+{
+	return expressionRight_;
+}
+
+
 
 
 //etc
@@ -96,6 +113,45 @@ bool operator==(Rule const lhs, Rule const rhs) {
 //	return facts;
 //}
 
+#include <unistd.h>
+void Rule::validateLeft()
+{
+	std::string &str = left_;
+	//1st
+	//2nd
+	//3rd
+	std::cerr << "dick1\n";
+
+
+
+
+//	int i = 0;
+	for (std::string::iterator it=str.begin(); it != str.end(); it++) {
+		if (*it == '!') {
+			std::cerr << "|" << *it  << std::endl;
+			 str.insert((it-1), *(it + 1));//			str.insert(str.begin() + 2, 'a');
+			std::cerr << "-" << *it << std::endl;
+			usleep(1000);
+//			it ++;
+		}
+	}
+	std::cout << std::endl;
+//	std::cerr << left_ << std::endl;
+}
+
+
+
+void validateRight()
+{
+
+}
+
+
+
+
+
+
+
 
 void Rule::createAdjacency()
 {
@@ -112,11 +168,24 @@ void Rule::createAdjacency()
 	}
 }
 
+void Rule::createExpression()
+{
+	/*before inference character*/
+	for (const char & c: left_) {
+		if (isupper(c))
+			expressionLeft_.emplace_back(c); //  (std::make_pair(c, LEFT_SIDE));
+		else
+			expressionLeft_.emplace_back(c); //  (std::make_pair(c, LEFT_SIDE));
+	}
 
-
-
-
-
+	/*after inference character*/
+	for (const char & c: right_) {
+		if (isupper(c))
+			expressionRight_.emplace_back(c); //  (std::make_pair(c, LEFT_SIDE));
+		else
+			expressionRight_.emplace_back(c); //  (std::make_pair(c, LEFT_SIDE));
+	}
+}
 
 eInference Rule::initInference(std::string & inference)
 {

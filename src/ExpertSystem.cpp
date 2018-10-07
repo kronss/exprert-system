@@ -16,6 +16,9 @@
 //#include <algorithm>
 
 
+//#include <boost/regex.hpp>
+
+
 #define DEBUG 1
 
 /******************************************************************************/
@@ -120,38 +123,64 @@ void ExpertSystem::prepareEngine()
 {
 //	std::map<char, int> adjacency;
 	printMatrix();
-
-
-
 }
 
 void ExpertSystem::printMatrix() {
-  for (Rule& r: Rules_) {
-    for (auto& p : r.getAdjacency()) {
-      std::cout << p.first << p.second << std::endl;
+    for (Rule& r: Rules_) {
+        for (auto& p : r.getAdjacency()) {
+            std::cout << p.first << " | " ;
+        }
+
+        std::cout << std::endl;
+
+        for (auto& p : r.getAdjacency()) {
+			std::cout << p.second << " | " ;
+		}
+
+        std::cout << std::endl;
     }
-  }
 }
+
+//void ExpertSystem::printMatrix() {
+//    for (Rule& r: Rules_) {
+//        for (auto& p : r.getAdjacency()) {
+//            std::cout << p.first << p.second << std::endl;
+//        }
+//    }
+//}
 
 
 /******************************************************************************/
 /* PRIVATE                                                                    */
 /******************************************************************************/
 
+
+//void ExpertSystem::createHuckN1()
+//{
+//
+//}
+
+
+
 void ExpertSystem::createRule(std::string &line)
 {
     std::smatch lineMatch;
                      /*(   1st    )( 2nd  )(   3rd    )*/
-    std::regex test4("^([A-Z!+|^]*)(<=>|=>)([A-Z!+|^]*)$"); /*tokenyzer*/
+    std::regex tokens("^([\\(\\)A-Z!+|^]*)(<=>|=>)([A-Z!+|^]*)$"); /*tokenyzer*/
     std::string tmp;
     enum eInference inference;
 
-    regex_search(line, lineMatch, test4);
+    regex_search(line, lineMatch, tokens);
 
-    std::cout << "    ----0st: " << lineMatch[FULL_STRING].str() << std::endl;
-    std::cout << "    ----1st: " << lineMatch[LEFT_PART].str()   << std::endl;
-    std::cout << "    ----2st: " << lineMatch[INFERENCE].str()   << std::endl;
-    std::cout << "    ----3st: " << lineMatch[RIGHT_PART].str()  << std::endl;
+//    std::cout << "    ----0st: " << lineMatch[FULL_STRING].str() << std::endl;
+//    std::cout << "    ----1st: " << lineMatch[LEFT_PART].str()   << std::endl;
+//    std::cout << "    ----2st: " << lineMatch[INFERENCE].str()   << std::endl;
+//    std::cout << "    ----3st: " << lineMatch[RIGHT_PART].str()  << std::endl;
+
+    //1st validation
+    //2nd validation
+    //3rd validation
+
 
 
 
@@ -177,7 +206,7 @@ bool ExpertSystem::lineInitFacts(std::string &line)
     	std::string lineTmp = lineMatch[1].str();
     	for(std::string::iterator it = lineTmp.begin(); it != lineTmp.end(); ++it) {
     		/*have only A..Z characters*/
-    		FactsMap_.insert(std::make_pair(*it, INITIAL));
+    		allFacts_.emplace_back(*it);
     	}
     	/*//debug
 		for(Facts::const_iterator it = FactsMap_.begin(); it != FactsMap_.end(); ++it) {
@@ -219,32 +248,38 @@ bool ExpertSystem::lineQueryFacts(std::string &line)
 
 bool ExpertSystem::lineValid(std::string &line)
 {
-	bool ret = true;
-    std::smatch lineMatch;
+	bool ret = false;
+//    std::smatch lineMatch;
 
 //    std::regex emptyLineRegexp("^\\s*$");
-//    std::regex test("^(!?[A-Z])(=>|<=>)(!?[A-Z](\\+!?[A-Z])*)$");
+    std::regex usedCharacters("^[A-Z<=>+!?()|^]*$");
 //    std::regex test("^(!?[A-Z]\\+|\\||\\^!?[A-Z]*)(=>|<=>)(!?[A-Z](\\+!?[A-Z])*)$");
 
-//v1
-    std::regex test1("^(!?[A-Z])(=>|<=>)(!?[A-Z](\\+!?[A-Z])*)$"); //    Для тех где слева одна буква
-    std::regex test2("^(!?[A-Z](\\+!?[A-Z])+)(=>|<=>)(!?[A-Z](\\+!?[A-Z])*)$"); // Для плюсов
-    std::regex test3("^(!?[A-Z](\\+|\\||\\^)!?[A-Z])(=>|<=>)(!?[A-Z](\\+!?[A-Z])*)$"); // Для других операций
-
-    if        (regex_search(line, lineMatch, test1)) {
-//        std::cout << "OK1: " << line << std::endl; //debug
-    	goto done;
-    } else if (regex_search(line, lineMatch, test2)) {
-//        std::cout << "OK2: " << line << std::endl; //debug
-    	goto done;
-    } else if (regex_search(line, lineMatch, test3)) {
-//        std::cout << "OK3: " << line << std::endl; //debug
-    	goto done;
-    } else {
-//        std::cout << "KO: " << line << std::endl; //debug
-//        throw ESException(INVAL_TOKEN, line); /*TODO: uncoment*/
-        goto err; /*TODO: remove hack*/
+    if (regex_match(line, usedCharacters)) {
+    	std::cout << "line valid : " << line << std::endl;
+    	ret = true;
     }
+
+    return ret;
+//v1
+//    std::regex test1("^(!?[A-Z])(=>|<=>)(!?[A-Z](\\+!?[A-Z])*)$"); //    Для тех где слева одна буква
+//    std::regex test2("^(!?[A-Z](\\+!?[A-Z])+)(=>|<=>)(!?[A-Z](\\+!?[A-Z])*)$"); // Для плюсов
+//    std::regex test3("^(!?[A-Z](\\+|\\||\\^)!?[A-Z])(=>|<=>)(!?[A-Z](\\+!?[A-Z])*)$"); // Для других операций
+//
+//    if        (regex_search(line, lineMatch, test1)) {
+////        std::cout << "OK1: " << line << std::endl; //debug
+//    	goto done;
+//    } else if (regex_search(line, lineMatch, test2)) {
+////        std::cout << "OK2: " << line << std::endl; //debug
+//    	goto done;
+//    } else if (regex_search(line, lineMatch, test3)) {
+////        std::cout << "OK3: " << line << std::endl; //debug
+//    	goto done;
+//    } else {
+////        std::cout << "KO: " << line << std::endl; //debug
+////        throw ESException(INVAL_TOKEN, line); /*TODO: uncoment*/
+//        goto err; /*TODO: remove hack*/
+//    }
 
 //    std::cout << "    0st: " << lineMatch[0].str() << std::endl;
 //    std::cout << "    1st: " << lineMatch[1].str() << std::endl;
@@ -253,10 +288,10 @@ bool ExpertSystem::lineValid(std::string &line)
 //    std::cout << "    4st: " << lineMatch[4].str() << std::endl;
 //    std::cout << "    5st: " << lineMatch[5].str() << std::endl;
 
-err:
-	ret = false;
-done:
-    return ret;
+//err:
+//	ret = false;
+//done:
+//    return ret;
 }
 
 void ExpertSystem::removeUnusedCharacters(std::string & line)

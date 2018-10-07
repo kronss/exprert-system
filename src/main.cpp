@@ -13,6 +13,8 @@ int main(const int argc, char **argv)
     	expertSystem.readInput(argc, argv);
     	expertSystem.readFromFile();
     	expertSystem.prepareEngine();
+
+
     } catch (std::exception &e) {
         std::cerr << e.what() << std::endl;
     } catch (...) {

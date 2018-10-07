@@ -3,10 +3,10 @@
 
 #include <string>
 #include <map>
+#include <vector>
 #include <list>
 #include "Rule.h"
 
-class Fact;
 
 enum initialFactStatus {
 	INITIAL = 0,  /*true always! Does not reassign*/
@@ -19,12 +19,14 @@ enum eFactValue {
 	eUNKNOWN,
 };
 
-typedef std::map<const char, Fact> Facts;    /*initial true facts*/
+class Fact;
+typedef std::vector<class Fact>    allFacts;
+//typedef std::map<const char, Fact> Facts;    /*initial true facts*/
 typedef std::list<const char> Queries;
 
 class Fact {
 public:
-	Fact(enum initialFactStatus init = DEFAULT);
+	Fact(char value, enum initialFactStatus init = DEFAULT);
     ~Fact();
 
     Fact(Fact const &);
@@ -38,6 +40,7 @@ public:
 private:
     const bool initial_;
     bool       condition_;
+    const char value_;
 };
 
 /*TODO

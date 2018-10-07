@@ -8,10 +8,11 @@
 /******************************************************************************/
 /* PUBLIC                                                                     */
 /******************************************************************************/
-Fact::Fact(enum initialFactStatus init)
+Fact::Fact(char value, enum initialFactStatus init)
 :
 initial_(init),
-condition_(init == INITIAL ? eTRUE : eFALSE)
+condition_(init == INITIAL ? eTRUE : eFALSE),
+value_(value)
 {}
 
 Fact::~Fact()
@@ -20,7 +21,8 @@ Fact::~Fact()
 Fact::Fact(Fact const &rval)
 :
 initial_(rval.initial_),
-condition_(rval.condition_)
+condition_(rval.condition_),
+value_(rval.value_)
 {}
 
 Fact& Fact::operator = (Fact const &rval)
