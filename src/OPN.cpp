@@ -7,6 +7,7 @@
 #include<stack>
 #include<string>
 
+
 /******************************************************************************/
 /* API */
 /******************************************************************************/
@@ -154,9 +155,9 @@ std::string InfixToPostfix(std::string &expression)
 // We are assuming in this solution that operand will be a single character
 bool IsOperand (char C)
 {
-	if(C >= '0' && C <= '9') return true;
-	if(C >= 'a' && C <= 'z') return true;
-	if(C >= 'A' && C <= 'Z') return true;
+	if (C >= '0' && C <= '9') return true;
+	if (C >= 'a' && C <= 'z') return true;
+	if (C >= 'A' && C <= 'Z') return true;
 	return false;
 }
 

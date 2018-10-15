@@ -82,7 +82,7 @@ private:
 
 
 //validation
-	void validateLeft();
+	void validateExpresion(std::string &str);
 
 
 

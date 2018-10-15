@@ -24,7 +24,7 @@ Rule::Rule(std::string left, std::string inference, std::string right)
 , leftPostfix_(InfixToPostfix(left))
 //, adjacency_(createAdjency(fullString))
 {
-	validateLeft();
+	validateExpresion(left_);
 //	validateInference();       //TODO!!!!!!!!!!
 //	validateRight();
 
@@ -122,26 +122,42 @@ bool operator==(Rule const lhs, Rule const rhs) {
 //	return facts;
 //}
 
-#include <unistd.h>
-void Rule::validateLeft()
+#include <cctype>
+void Rule::validateExpresion(std::string &str)
 {
-	std::string &str = left_;
+	int alpha = 0;
+	int oper = 1;
+	int oposite = 0;
 
 	if (str.empty())
 		throw ESException("empty left part in rule ");
 
+	for (std::string::const_iterator it = str.begin(); it != str.end(); ++it) {
 
-	//1st
-	//2nd
-	//3rd
+		if (*it == '(' || *it == ')') continue ; /*handle it in OPN.cpp*/
 
-}
+		else if (isalnum(*it)) {
+			if (++alpha > 1) throw ESException("invalid rules expresion: too much parametrs");
+			oper = 0;
+//			oposite = 0;
+		}
 
+		else if (*it == '+' || *it == '|' || *it == '^') {
+			if (++oper > 1) throw ESException("invalid rules expresion: too much operators");
+			alpha = 0;
+			oposite = 0;
+		}
 
+		else if (*it == '!') {
+			if (++oposite > 1) throw ESException("invalid rules expresion: to much oposites");
+			alpha = 0;
+		}
 
-void validateRight()
-{
-
+		else {
+			throw ESException("invalid rules expresion");
+		}
+	}
+	return ;
 }
 
 
