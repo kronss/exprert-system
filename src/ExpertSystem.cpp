@@ -69,7 +69,7 @@ void ExpertSystem::readInput(int ar, char **av)
     return;
 usage:
 	printUsage(av[0]);
-	throw (ESException(PRINT_USAGE));
+	throw (ESException());
 }
 
 void ExpertSystem::readFromFile()
@@ -83,7 +83,9 @@ void ExpertSystem::readFromFile()
 
     if (!RegularFile(fileName_.c_str())) {
         DBG("Bad file");
-        throw ESException(BAD_FILE, fileName_.c_str());
+        std::string what = "Bad file: ";
+        what += fileName_.c_str();
+        throw ESException(what);
     }
 
     /*line without unused characters*/

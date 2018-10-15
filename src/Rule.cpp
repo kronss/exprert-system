@@ -120,23 +120,7 @@ void Rule::validateLeft()
 	//1st
 	//2nd
 	//3rd
-	std::cerr << "dick1\n";
 
-
-
-
-//	int i = 0;
-	for (std::string::iterator it=str.begin(); it != str.end(); it++) {
-		if (*it == '!') {
-			std::cerr << "|" << *it  << std::endl;
-			 str.insert((it-1), *(it + 1));//			str.insert(str.begin() + 2, 'a');
-			std::cerr << "-" << *it << std::endl;
-			usleep(1000);
-//			it ++;
-		}
-	}
-	std::cout << std::endl;
-//	std::cerr << left_ << std::endl;
 }
 
 
@@ -195,9 +179,9 @@ eInference Rule::initInference(std::string & inference)
     	inference = THEN;
     } else if (inference == "<=>") {
     	inference = IF_AND_ONLY_IF;
-//        throw ESException(NOT_SUPPORTED); //TODO: rework to sting
+        throw ESException("Not supported inference `<=>`");
     } else {
-        throw ESException(NOT_SUPPORTED); //TODO: rework to sting
+        throw ESException("Not supported inference");
     }
 
     return ret;

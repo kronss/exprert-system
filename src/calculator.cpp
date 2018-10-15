@@ -11,23 +11,24 @@
 std::string InfixToPostfix(std::string expression);
 
 // Function to verify whether an operator has higher precedence over other
-int HasHigherPrecedence(char operator1, char operator2);
+static int HasHigherPrecedence(char operator1, char operator2);
 
 // Function to verify whether a character is operator symbol or not.
-bool IsOperatorBinary(char C);
+static bool IsOperatorBinary(char C);
 
-bool IsOperatorUnary(char C);
+static bool IsOperatorUnary(char C);
 
 // Function to verify whether a character is alphanumeric chanaracter
 //(letter or numeric digit) or not.
-bool IsOperand(char C);
+static bool IsOperand(char C);
 
 // Function to check whether a char is an opening parenthesis i.e '(' or '{' or '['
-bool IsOpeningParentheses(char C);
+static bool IsOpeningParentheses(char C);
 
 // Function to check whether a char is an closing parenthesis i.e ')' or '}' or ']'
-bool IsClosingParentheses(char C);
+static bool IsClosingParentheses(char C);
 
+#if 0
 int main()
 {
 	std::string expression;
@@ -36,6 +37,7 @@ int main()
 	std::string postfix = InfixToPostfix(expression);
 	std::cout<<"Output = "<<postfix<<"\n";
 }
+#endif
 
 // Function to evaluate Postfix expression and return output
 std::string InfixToPostfix(std::string expression)
