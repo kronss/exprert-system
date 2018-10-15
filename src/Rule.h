@@ -64,6 +64,9 @@ private:
 	eInference inference_;
 	std::string right_;
 
+	std::string leftPostfix_;
+
+
 	Adjacency adjacency_;
 	Expression expressionLeft_;
 	Expression expressionRight_;
@@ -85,6 +88,8 @@ private:
 
 //	= delete;
 };
+
+
 
 // stream overload
 //std::ostream & 	operator<<(std::ostream & o, Rule const & rule);

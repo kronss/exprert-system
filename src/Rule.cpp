@@ -6,27 +6,36 @@
 #include <iostream>
 #include <cctype> /*isupper*/
 
+#define ES
+#include "OPN.cpp"
+#undef ES
 /******************************************************************************/
 /* PUBLIC                                                                     */
 /******************************************************************************/
 
 
 
-
+//friend
 
 Rule::Rule(std::string left, std::string inference, std::string right)
 : left_(left)
 , inference_(initInference(inference))
 , right_(right)
+, leftPostfix_(InfixToPostfix(left))
 //, adjacency_(createAdjency(fullString))
 {
 	validateLeft();
-//	validateInference();
+//	validateInference();       //TODO!!!!!!!!!!
 //	validateRight();
 
 	createAdjacency();
 
 	createExpression();
+
+
+	std::cout << "infix:   " << left_ << std::endl;
+	std::cout << "postfix: " << leftPostfix_ << std::endl;
+
 }
 
 Rule::Rule(Rule const & rhs)
@@ -117,6 +126,11 @@ bool operator==(Rule const lhs, Rule const rhs) {
 void Rule::validateLeft()
 {
 	std::string &str = left_;
+
+	if (str.empty())
+		throw ESException("empty left part in rule ");
+
+
 	//1st
 	//2nd
 	//3rd

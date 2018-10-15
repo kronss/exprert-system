@@ -7,8 +7,17 @@
 #include<stack>
 #include<string>
 
+/******************************************************************************/
+/* API */
+/******************************************************************************/
+
 // Function to convert Infix expression to postfix
-std::string InfixToPostfix(std::string expression);
+std::string InfixToPostfix(std::string &expression);
+
+/******************************************************************************/
+/* Realization */
+/******************************************************************************/
+
 
 // Function to verify whether an operator has higher precedence over other
 static int HasHigherPrecedence(char operator1, char operator2);
@@ -28,7 +37,7 @@ static bool IsOpeningParentheses(char C);
 // Function to check whether a char is an closing parenthesis i.e ')' or '}' or ']'
 static bool IsClosingParentheses(char C);
 
-#if 0
+#ifndef ES
 int main()
 {
 	std::string expression;
@@ -37,17 +46,17 @@ int main()
 	std::string postfix = InfixToPostfix(expression);
 	std::cout<<"Output = "<<postfix<<"\n";
 }
-#endif
+#endif /*ES*/
 
 // Function to evaluate Postfix expression and return output
-std::string InfixToPostfix(std::string expression)
+std::string InfixToPostfix(std::string &expression)
 {
 	// Declaring a Stack from Standard template library in C++.
 	std::stack<char> S;
 	std::string postfix = ""; // Initialize postfix as empty std::string.
 	int unaryToBinary = 0;
 
-    S.push('('); // Push a left parenthesis ‘(‘ onto the stack.
+	S.push('('); // Push a left parenthesis ‘(‘ onto the stack.
 
 	for (int i = 0;i< expression.length(); i++) {
 
@@ -127,16 +136,16 @@ std::string InfixToPostfix(std::string expression)
 		S.pop();
 	}
 
-    if (S.empty()) {
-        throw std::runtime_error("missing left paren");
-    }
-    // Discard the left paren
-     S.pop();
+	if (S.empty()) {
+		throw std::runtime_error("missing left paren");
+	}
+	// Discard the left paren
+	S.pop();
 
-     // all open parens should be closed now -> empty stack
-     if (!S.empty()) {
-         throw std::runtime_error("missing right paren");
-     }
+	// all open parens should be closed now -> empty stack
+	if (!S.empty()) {
+		throw std::runtime_error("missing right paren");
+	}
 
 	return postfix;
 }
@@ -154,7 +163,7 @@ bool IsOperand (char C)
 // Function to verify whether a character is operator symbol or not.
 bool IsOperatorBinary(char C)
 {
-	if (C == '+' || C == '-' || C == '*' || C == '/' || C== '^')
+	if (C == '+' || C == '|' || C== '^')
 		return true;
 
 	return false;
@@ -178,9 +187,9 @@ bool IsOpeningParentheses(char C)
 
 bool IsClosingParentheses(char C)
 {
-    if(C == ')' || C == '}' || C==']')
-        return true ;
-    return false;
+	if(C == ')' || C == '}' || C==']')
+		return true ;
+	return false;
 }
 // Function to verify whether an operator is right associative or not.
 int IsRightAssociative(char op)
