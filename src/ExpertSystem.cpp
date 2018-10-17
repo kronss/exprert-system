@@ -13,7 +13,7 @@
 
 #include <unistd.h>
 #include <string.h>
-//#include <algorithm>
+#include <algorithm>
 
 
 //#include <boost/regex.hpp>
@@ -125,17 +125,124 @@ void ExpertSystem::prepareEngine()
 {
 //	std::map<char, int> adjacency;
 	printMatrix();
+
+	allFacts_.reserve(26);
+
+	/*create array of facts*/
+	for (int i = 0; i < 26; ++i) {
+		allFacts_.emplace_back(i, eFALSE);
+	}
+
+	/*remove duplicates*/
+	sort( allFactsRaw_.begin(), allFactsRaw_.end() );
+	allFactsRaw_.erase( unique( allFactsRaw_.begin(), allFactsRaw_.end() ), allFactsRaw_.end() );
+
+	/*create array of facts*/
+//	for (const char & c: allFactsRaw_) {
+//		if (isupper(c)) {
+//			allFacts_.emplace_back(c - 'A', eFALSE); //  (std::make_pair(c, LEFT_SIDE));
+//		}
+//	}
+
+	for ( const char & c: Initial_ ) {
+		allFacts_[c - 'A'].setIsInitial(eINITIAL);
+		allFacts_[c - 'A'].setCondition(eTRUE);
+	}
+
+	for ( const char & c: QueriesList_ ) {
+		allFacts_[c - 'A'].setCondition(eUNKNOWN);
+	}
+
+//	for (Fact & p : allFacts_) {
+//		std::cout << p << std::endl;
+//	}
 }
 
+//
+//void ExpertSystem::BC()
+//{
+//	allFacts::const_iterator	fit  = allFacts_.begin();
+//	allFacts::const_iterator	fite = allFacts_.end();
+//
+//	QueriesList_.begin();
+//
+//	for (; fit != fite; fit++) {
+//		solveFact(*fit);
+////		clearUsedRules();
+//	}
+//
+//	return ;
+//
+//
+//
+//
+//}
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//void ExpertSystem::solve() {
+//
+//	allFacts::const_iterator	fit  = allFacts_.begin();
+//	allFacts::const_iterator	fite = allFacts_.end();
+//
+//	for (; fit != fite; fit++) {
+//		solveFact(*fit);
+//		clearUsedRules();
+//	}
+//
+//	return ;
+//}
+//
+//
+//void ExpertSystem::solveFact(Fact const & fact) {
+//
+//	Rules::const_iterator	rit  = Rules_.begin();
+//	Rules::const_iterator	rite = Rules_.end();
+//
+//	for (; rit != rite; rit++) {
+//
+//		std::string		rhs = rit->getRight();
+//
+//		if (rhs.find(fact.getValue()) != std::string::npos) {
+//
+//			if (! ruleUsed(*rit)) {
+//
+//				addUsedRules(*rit);
+//				solveRule(*rit, fact);
+//			}
+//		}
+//	}
+//}
+//
+//bool					ExpertSystem::ruleUsed(Rule const & rule) {
+//	Rules::const_iterator	rit  = getUsedRules().begin();
+//	Rules::const_iterator	rite = getUsedRules().end();
+//
+//	for (; rit != rite; rit++) {
+//		if (rule == *rit)
+//			return true;
+//	}
+//
+//	return false;
+//}
+
+
 void ExpertSystem::printMatrix() {
-    for (Rule& r: Rules_) {
-        for (auto& p : r.getAdjacency()) {
+    for (Rule & r: Rules_) {
+        for (auto & p : r.getAdjacency()) {
             std::cout << p.first << " | " ;
         }
 
         std::cout << std::endl;
 
-        for (auto& p : r.getAdjacency()) {
+        for (auto & p : r.getAdjacency()) {
 			std::cout << p.second << " | " ;
 		}
 
@@ -184,11 +291,18 @@ void ExpertSystem::createRule(std::string &line)
     //3rd validation
 
 
-
-
     Rules_.emplace_back(Rule(lineMatch[LEFT_PART].str(),
     						 lineMatch[INFERENCE].str(),
 							 lineMatch[RIGHT_PART].str()));
+
+
+
+	for (const char & c: line) {
+		if (isupper(c))
+			allFactsRaw_.emplace_back(c); //  (std::make_pair(c, LEFT_SIDE));
+	}
+
+
 }
 
 /*
@@ -208,8 +322,10 @@ bool ExpertSystem::lineInitFacts(std::string &line)
     	std::string lineTmp = lineMatch[1].str();
     	for(std::string::iterator it = lineTmp.begin(); it != lineTmp.end(); ++it) {
     		/*have only A..Z characters*/
-    		allFacts_.emplace_back(*it);
+    		Initial_.emplace_back(*it);
+    		allFactsRaw_.emplace_back(*it);
     	}
+
     	/*//debug
 		for(Facts::const_iterator it = FactsMap_.begin(); it != FactsMap_.end(); ++it) {
 			std::cout << it->first << std::endl;
@@ -236,6 +352,7 @@ bool ExpertSystem::lineQueryFacts(std::string &line)
     	for(std::string::iterator it = lineTmp.begin(); it != lineTmp.end(); ++it) {
     		/*have only A..Z characters*/
     		QueriesList_.emplace_back(*it);
+    		allFactsRaw_.emplace_back(*it);
     	}
 
     	/*//debug

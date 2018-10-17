@@ -8,11 +8,10 @@
 /******************************************************************************/
 /* PUBLIC                                                                     */
 /******************************************************************************/
-Fact::Fact(char value, enum initialFactStatus init)
-:
-initial_(init),
-condition_(init == INITIAL ? eTRUE : eFALSE),
-value_(value)
+Fact::Fact(char value, enum eFactValue condition, enum initialFactStatus init)
+: value_(value)
+, initial_(init)
+, condition_(condition)
 {}
 
 Fact::~Fact()
@@ -34,27 +33,55 @@ Fact& Fact::operator = (Fact const &rval)
 	return *this;
 }
 
-bool Fact::getIsInitial() const
+char Fact::getValue() const
 {
-	return initial_;
+	return value_;
 }
 
-bool Fact::getCondition() const
+enum eFactValue Fact::getCondition() const
 {
 	return condition_;
 }
 
+const bool Fact::getIsInitial() const
+{
+	return initial_;
+}
+
+/*SETTER*/
+void Fact::setIsInitial(enum initialFactStatus isInit)
+{
+	initial_ = isInit;
+}
+
 void Fact::setCondition(enum eFactValue newStatus)
 {
-	if (initial_ && newStatus == eTRUE) {
-		/*trying reassign initial fact, ignored*/
-		return;
-//		throw (ESException(REASSIGN_INIT));
-	}
+	if (eUNKNOWN == newStatus && eINITIAL == initial_) return;
+
 	condition_ = newStatus;
 }
+
+bool Fact::operator == ( const char& rhs ) const
+{
+    return getValue() == rhs;
+}
+
 
 /******************************************************************************/
 /* PRIVATE                                                                    */
 /******************************************************************************/
+
+
+
+
+
+
+
+//std::ostream &operator << (std::ostream & o, const Victim &rhs)
+
+
+std::ostream & operator << (std::ostream & o, Fact const & rhs) {
+	o << static_cast<char>(rhs.getValue() + 'A') << " == " <<  (rhs.getCondition() == eTRUE ? "true" : rhs.getCondition() == eFALSE ? "false" : "unknown"); // << " = " << static_cast<int>(rhs.getCondition());
+	return o;
+}
 

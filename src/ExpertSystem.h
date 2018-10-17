@@ -19,6 +19,12 @@ public:
         void readFromFile();
         void prepareEngine();
 
+        void solve();
+        void solveFact(Fact const & fact);
+
+
+        void BC();
+
         void usage();
 
 private:
@@ -26,8 +32,14 @@ private:
         std::string fileName_;
 
         allFacts allFacts_;
+        allFactsRaw allFactsRaw_;
+
+        Initial Initial_;
         Queries QueriesList_;
         Rules Rules_;
+
+        Rules usedRules_;
+
 
         bool RegularFile(const char *fileName);
 

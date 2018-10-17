@@ -163,10 +163,6 @@ void Rule::validateExpresion(std::string &str)
 
 
 
-
-
-
-
 void Rule::createAdjacency()
 {
 	/*before inference character*/
