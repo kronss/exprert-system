@@ -21,15 +21,15 @@ enum eFactValue {
 };
 
 class Fact;
-typedef std::vector<class Fact>    allFacts;
+typedef std::map<char, Fact>    allFacts;
 typedef std::vector<int> allFactsRaw;
 //typedef std::map<const char, Fact> allFacts;    /*initial true facts*/
-typedef std::list<int> Initial;
-typedef std::list<int> Queries;
+typedef std::vector<char> Initial;
+typedef std::vector<char> Queries;
 
 class Fact {
 public:
-	Fact(char value, enum eFactValue condition, enum initialFactStatus init = eDEFAULT);
+	Fact(char letter, enum eFactValue condition, enum initialFactStatus init = eDEFAULT);
     ~Fact();
 
     Fact(Fact const &);
@@ -45,9 +45,9 @@ public:
     void setCondition(enum eFactValue newStatus);
 
 private:
-    char            value_;
+    char            letter_;
     enum eFactValue condition_;
-    bool            initial_;
+    bool            initial_; /*UNUSED*/
 };
 
 

@@ -126,36 +126,15 @@ void ExpertSystem::prepareEngine()
 //	std::map<char, int> adjacency;
 	printMatrix();
 
-	allFacts_.reserve(26);
-
-	/*create array of facts*/
-	for (int i = 0; i < 26; ++i) {
-		allFacts_.emplace_back(i, eFALSE);
+	for ( char c: initial_ ) {
+//		(allFacts_[c]).setIsInitial(eINITIAL); /*UNUSED*/
+//		(allFacts_[c]).setCondition(eTRUE);
 	}
 
-	/*remove duplicates*/
-	sort( allFactsRaw_.begin(), allFactsRaw_.end() );
-	allFactsRaw_.erase( unique( allFactsRaw_.begin(), allFactsRaw_.end() ), allFactsRaw_.end() );
-
-	/*create array of facts*/
-//	for (const char & c: allFactsRaw_) {
-//		if (isupper(c)) {
-//			allFacts_.emplace_back(c - 'A', eFALSE); //  (std::make_pair(c, LEFT_SIDE));
-//		}
-//	}
-
-	for ( const char & c: Initial_ ) {
-		allFacts_[c - 'A'].setIsInitial(eINITIAL);
-		allFacts_[c - 'A'].setCondition(eTRUE);
+	for ( char c: queries_ ) {
+//		(allFacts_[c]).setCondition(eUNKNOWN); /*? separate array*/
 	}
 
-	for ( const char & c: QueriesList_ ) {
-		allFacts_[c - 'A'].setCondition(eUNKNOWN);
-	}
-
-//	for (Fact & p : allFacts_) {
-//		std::cout << p << std::endl;
-//	}
 }
 
 //
@@ -235,7 +214,7 @@ void ExpertSystem::prepareEngine()
 
 
 void ExpertSystem::printMatrix() {
-    for (Rule & r: Rules_) {
+    for (Rule & r: rules_) {
         for (auto & p : r.getAdjacency()) {
             std::cout << p.first << " | " ;
         }
@@ -291,16 +270,20 @@ void ExpertSystem::createRule(std::string &line)
     //3rd validation
 
 
-    Rules_.emplace_back(Rule(lineMatch[LEFT_PART].str(),
+    rules_.emplace_back(Rule(lineMatch[LEFT_PART].str(),
     						 lineMatch[INFERENCE].str(),
 							 lineMatch[RIGHT_PART].str()));
 
 
 
-	for (const char & c: line) {
-		if (isupper(c))
-			allFactsRaw_.emplace_back(c); //  (std::make_pair(c, LEFT_SIDE));
+	for (char c: line) {
+		if (isupper(c)) {
+//			Fact a(c, eUNKNOWN);
+			allFacts_.emplace(c, Fact(c, eUNKNOWN));
+		}
+			//allFacts_.emplace(c, Fact(c, eFALSE)); //  (std::make_pair(c, LEFT_SIDE));
 	}
+
 
 
 }
@@ -322,8 +305,11 @@ bool ExpertSystem::lineInitFacts(std::string &line)
     	std::string lineTmp = lineMatch[1].str();
     	for(std::string::iterator it = lineTmp.begin(); it != lineTmp.end(); ++it) {
     		/*have only A..Z characters*/
-    		Initial_.emplace_back(*it);
-    		allFactsRaw_.emplace_back(*it);
+    		initial_.emplace_back(*it);
+
+    		allFacts_.at(*it).setCondition(eTRUE);
+    		allFacts_.at(*it).setCondition(eTRUE);
+//    		allFacts_[*it].setIsInitial(eINITIAL);
     	}
 
     	/*//debug
@@ -351,8 +337,9 @@ bool ExpertSystem::lineQueryFacts(std::string &line)
     	std::string lineTmp = lineMatch[1].str();
     	for(std::string::iterator it = lineTmp.begin(); it != lineTmp.end(); ++it) {
     		/*have only A..Z characters*/
-    		QueriesList_.emplace_back(*it);
-    		allFactsRaw_.emplace_back(*it);
+    		queries_.emplace_back(*it);
+
+//    		allFacts_.emplace_back(*it);
     	}
 
     	/*//debug

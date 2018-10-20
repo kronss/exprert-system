@@ -32,11 +32,11 @@ private:
         std::string fileName_;
 
         allFacts allFacts_;
-        allFactsRaw allFactsRaw_;
+//        allFactsRaw allFactsRaw_;
 
-        Initial Initial_;
-        Queries QueriesList_;
-        Rules Rules_;
+        Initial initial_;
+        Queries queries_;
+        Rules rules_;
 
         Rules usedRules_;
 

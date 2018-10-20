@@ -9,7 +9,7 @@
 /* PUBLIC                                                                     */
 /******************************************************************************/
 Fact::Fact(char value, enum eFactValue condition, enum initialFactStatus init)
-: value_(value)
+: letter_(value)
 , initial_(init)
 , condition_(condition)
 {}
@@ -21,7 +21,7 @@ Fact::Fact(Fact const &rval)
 :
 initial_(rval.initial_),
 condition_(rval.condition_),
-value_(rval.value_)
+letter_(rval.letter_)
 {}
 
 Fact& Fact::operator = (Fact const &rval)
@@ -35,7 +35,7 @@ Fact& Fact::operator = (Fact const &rval)
 
 char Fact::getValue() const
 {
-	return value_;
+	return letter_;
 }
 
 enum eFactValue Fact::getCondition() const
