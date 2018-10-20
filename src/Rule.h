@@ -8,6 +8,8 @@
 class Rule;
 typedef std::vector<Rule>          Rules;
 typedef std::map<const char, int>  Adjacency;
+typedef std::vector<char>    Expression;
+
 
 enum stringPart {
 	FULL_STRING  = 0,
@@ -46,6 +48,10 @@ public:
 	eInference const &  getInference() const;
 	std::string const & getRight() const;
 	Adjacency const &   getAdjacency() const;
+	Expression const &  getExpressionLeft() const;
+	Expression const &  getExpressionRight() const;
+
+
 
 //	void 					setLeft(std::string const & left) { left_ = left; }
 //	void 					setRight(std::string const & right) { right_ = right; }
@@ -58,18 +64,32 @@ private:
 	eInference inference_;
 	std::string right_;
 
-	Adjacency adjacency_;
+	std::string leftPostfix_;
 
+
+	Adjacency adjacency_;
+	Expression expressionLeft_;
+	Expression expressionRight_;
 
 
 
 	void createAdjacency();
+	void createExpression();
 
 	eInference initInference(std::string & inference);
 
 
+
+
+//validation
+	void validateExpresion(std::string &str);
+
+
+
 //	= delete;
 };
+
+
 
 // stream overload
 //std::ostream & 	operator<<(std::ostream & o, Rule const & rule);

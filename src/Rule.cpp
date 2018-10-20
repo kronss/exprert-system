@@ -3,23 +3,38 @@
 
 #include "ESException.h"
 
+#include <iostream>
 #include <cctype> /*isupper*/
 
+#define ES
+#include "OPN.cpp"
+#undef ES
 /******************************************************************************/
 /* PUBLIC                                                                     */
 /******************************************************************************/
 
 
 
-
+//friend
 
 Rule::Rule(std::string left, std::string inference, std::string right)
 : left_(left)
 , inference_(initInference(inference))
 , right_(right)
+, leftPostfix_(InfixToPostfix(left))
 //, adjacency_(createAdjency(fullString))
 {
+	validateExpresion(left_);
+//	validateInference();       //TODO!!!!!!!!!!
+//	validateRight();
+
 	createAdjacency();
+
+	createExpression();
+
+
+	std::cout << "infix:   " << left_ << std::endl;
+	std::cout << "postfix: " << leftPostfix_ << std::endl;
 
 }
 
@@ -68,6 +83,17 @@ Adjacency const & Rule::getAdjacency() const
 	return adjacency_;
 }
 
+Expression const & Rule::getExpressionLeft() const
+{
+	return expressionLeft_;
+}
+
+Expression const & Rule::getExpressionRight() const
+{
+	return expressionRight_;
+}
+
+
 
 
 //etc
@@ -96,6 +122,46 @@ bool operator==(Rule const lhs, Rule const rhs) {
 //	return facts;
 //}
 
+#include <cctype>
+void Rule::validateExpresion(std::string &str)
+{
+	int alpha = 0;
+	int oper = 1;
+	int oposite = 0;
+
+	if (str.empty())
+		throw ESException("empty left part in rule ");
+
+	for (std::string::const_iterator it = str.begin(); it != str.end(); ++it) {
+
+		if (*it == '(' || *it == ')') continue ; /*handle it in OPN.cpp*/
+
+		else if (isalnum(*it)) {
+			if (++alpha > 1) throw ESException("invalid rules expresion: too much parametrs");
+			oper = 0;
+//			oposite = 0;
+		}
+
+		else if (*it == '+' || *it == '|' || *it == '^') {
+			if (++oper > 1) throw ESException("invalid rules expresion: too much operators");
+			alpha = 0;
+			oposite = 0;
+		}
+
+		else if (*it == '!') {
+			if (++oposite > 1) throw ESException("invalid rules expresion: to much oposites");
+			alpha = 0;
+		}
+
+		else {
+			throw ESException("invalid rules expresion");
+		}
+	}
+	return ;
+}
+
+
+
 
 void Rule::createAdjacency()
 {
@@ -112,11 +178,24 @@ void Rule::createAdjacency()
 	}
 }
 
+void Rule::createExpression()
+{
+	/*before inference character*/
+	for (const char & c: left_) {
+		if (isupper(c))
+			expressionLeft_.emplace_back(c); //  (std::make_pair(c, LEFT_SIDE));
+		else
+			expressionLeft_.emplace_back(c); //  (std::make_pair(c, LEFT_SIDE));
+	}
 
-
-
-
-
+	/*after inference character*/
+	for (const char & c: right_) {
+		if (isupper(c))
+			expressionRight_.emplace_back(c); //  (std::make_pair(c, LEFT_SIDE));
+		else
+			expressionRight_.emplace_back(c); //  (std::make_pair(c, LEFT_SIDE));
+	}
+}
 
 eInference Rule::initInference(std::string & inference)
 {
@@ -126,9 +205,9 @@ eInference Rule::initInference(std::string & inference)
     	inference = THEN;
     } else if (inference == "<=>") {
     	inference = IF_AND_ONLY_IF;
-//        throw ESException(NOT_SUPPORTED); //TODO: rework to sting
+        throw ESException("Not supported inference `<=>`");
     } else {
-        throw ESException(NOT_SUPPORTED); //TODO: rework to sting
+        throw ESException("Not supported inference");
     }
 
     return ret;

@@ -3,14 +3,15 @@
 
 #include <string>
 #include <map>
+#include <vector>
 #include <list>
 #include "Rule.h"
+#include <iostream>
 
-class Fact;
 
 enum initialFactStatus {
-	INITIAL = 0,  /*true always! Does not reassign*/
-	DEFAULT,      /*false*/
+	eDEFAULT = 0,      /*false*/
+	eINITIAL = 1,  /*true always! Does not reassign*/
 };
 
 enum eFactValue {
@@ -19,29 +20,38 @@ enum eFactValue {
 	eUNKNOWN,
 };
 
-typedef std::map<const char, Fact> Facts;    /*initial true facts*/
-typedef std::list<const char> Queries;
+class Fact;
+typedef std::vector<class Fact>    allFacts;
+typedef std::vector<int> allFactsRaw;
+//typedef std::map<const char, Fact> allFacts;    /*initial true facts*/
+typedef std::list<int> Initial;
+typedef std::list<int> Queries;
 
 class Fact {
 public:
-	Fact(enum initialFactStatus init = DEFAULT);
+	Fact(char value, enum eFactValue condition, enum initialFactStatus init = eDEFAULT);
     ~Fact();
 
     Fact(Fact const &);
     Fact& operator=(Fact const &);
 
-    bool getIsInitial() const;
-    bool getCondition() const;
+    char             getValue() const;
+    enum eFactValue  getCondition() const;
+    const bool       getIsInitial() const;
 
+    bool operator == ( const char& rhs ) const;
+
+    void setIsInitial(enum initialFactStatus isInit);
     void setCondition(enum eFactValue newStatus);
 
 private:
-    const bool initial_;
-    bool       condition_;
+    char            value_;
+    enum eFactValue condition_;
+    bool            initial_;
 };
 
-/*TODO
-std::ostream 			& operator<<(std::ostream & out, Fact const & rhs);
-*/
+
+std::ostream & operator << (std::ostream & o, Fact const & rhs);
+
 
 #endif /*FACT_H*/

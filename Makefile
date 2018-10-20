@@ -9,6 +9,8 @@ SRC_FILE_NAME = main.cpp           \
 				ESException.cpp    \
 				Fact.cpp           \
 				Rule.cpp           \
+#				OPN.cpp            \
+						
 
 SRC_DIR = src
 SRC = $(addprefix $(SRC_DIR)/, $(SRC_FILE_NAME))
@@ -27,6 +29,10 @@ $(EXEC): $(OBJ)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp | $(OBJ_DIR)
 	$(CC) $(CCFLAGS) -o $@ -c $< $(INC)
+
+$(OBJ_DIR)/Rule.o: $(SRC_DIR)/Rule.cpp $(SRC_DIR)/OPN.cpp | $(OBJ_DIR)
+	$(CC) $(CCFLAGS) -o $@ -c $< $(INC)
+
 
 $(OBJ_DIR):
 	@mkdir $(OBJ_DIR)
