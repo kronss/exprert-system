@@ -33,7 +33,7 @@ Fact& Fact::operator = (Fact const &rval)
 	return *this;
 }
 
-char Fact::getValue() const
+char Fact::getLetter() const
 {
 	return letter_;
 }
@@ -64,13 +64,19 @@ void Fact::setCondition(enum eFactValue newStatus)
 void Fact::addDependsOnRule(Rule & rule)
 {
 	dependeOnRules_.emplace_back(rule);
+//	dependeOnRules_.emplace_back(rule);
 }
 
+std::vector<Rule> & Fact::getDependsOnRule()
+{
+	return dependeOnRules_;
+//	dependeOnRules_.emplace_back(rule);
+}
 
 
 bool Fact::operator == ( const char& rhs ) const
 {
-    return getValue() == rhs;
+    return getLetter() == rhs;
 }
 
 
@@ -88,7 +94,7 @@ bool Fact::operator == ( const char& rhs ) const
 
 
 std::ostream & operator << (std::ostream & o, Fact const & rhs) {
-	o << static_cast<char>(rhs.getValue() + 'A') << " == " <<  (rhs.getCondition() == eTRUE ? "true" : rhs.getCondition() == eFALSE ? "false" : "unknown"); // << " = " << static_cast<int>(rhs.getCondition());
+	o << rhs.getLetter() << " == " <<  (rhs.getCondition() == eTRUE ? "true" : rhs.getCondition() == eFALSE ? "false" : "unknown"); // << " = " << static_cast<int>(rhs.getCondition());
 	return o;
 }
 

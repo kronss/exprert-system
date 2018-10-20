@@ -1,7 +1,5 @@
-A|C => B
-Z^G => B
-B => C
-C => D
-=A
-?D
-
+A + B => C
+C + D => E
+E | C => Z
+=AB
+?Z

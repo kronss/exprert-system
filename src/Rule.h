@@ -48,8 +48,13 @@ public:
 	eInference const &  getInference() const;
 	std::string const & getRight() const;
 	Adjacency const &   getAdjacency() const;
+
 	Expression const &  getExpressionLeft() const;
 	Expression const &  getExpressionRight() const;
+
+	std::string const & getleftPostfix_() const;
+	std::string         getRightPostfix_() const;
+
 
 //	bool hasFactOnRight(char factLetter);
 
@@ -67,9 +72,13 @@ private:
 	std::string right_;
 
 	std::string leftPostfix_;
+	std::string rightPostfix_; /*uncomplete*/
+
 
 
 	Adjacency adjacency_;
+
+
 
 	Expression expressionLeft_;
 	Expression expressionRight_;

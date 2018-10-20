@@ -6,7 +6,7 @@
 
 #define ES
 #include "OPN.cpp"
-#undef ES
+//#undef ES
 
 
 /******************************************************************************/
@@ -18,6 +18,8 @@ Rule::Rule(std::string left, std::string inference, std::string right)
 , inference_(initInference(inference))
 , right_(right)
 , leftPostfix_(InfixToPostfix(left))
+, rightPostfix_(InfixToPostfix(right))
+
 //, adjacency_(createAdjency(fullString))
 {
 	validateExpresion(left_);
@@ -31,7 +33,6 @@ Rule::Rule(std::string left, std::string inference, std::string right)
 
 	std::cout << "infix:   " << left_ << std::endl;
 	std::cout << "postfix: " << leftPostfix_ << std::endl;
-
 }
 
 Rule::Rule(Rule const & rhs)
@@ -88,6 +89,20 @@ Expression const & Rule::getExpressionRight() const
 {
 	return expressionRight_;
 }
+
+/*will work with copy*/
+std::string const & Rule::getleftPostfix_() const
+{
+	return leftPostfix_;
+}
+
+/*will work with copy*/
+std::string Rule::getRightPostfix_() const
+{
+	return rightPostfix_;
+}
+
+
 
 
 

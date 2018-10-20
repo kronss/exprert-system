@@ -126,101 +126,31 @@ void ExpertSystem::prepareEngine()
 //	std::map<char, int> adjacency;
 //	printMatrix();
 
-	for ( char c: initial_ ) {
-		allFacts_.at(c).setIsInitial(eINITIAL); /*UNUSED*/
-		allFacts_.at(c).setCondition(eTRUE);
-	}
+//	for ( char c: initial_ ) {
+//		allFacts_.at(c).setIsInitial(eINITIAL); /*UNUSED*/
+//		allFacts_.at(c).setCondition(eTRUE);
+//	}
 
-	for ( char c: queries_ ) {
-//		(allFacts_[c]).setCondition(eUNKNOWN); /*? separate array*/
-	}
+//	for ( char c: queries_ ) {
+////		(allFacts_[c]).setCondition(eUNKNOWN); /*? separate array*/
+//	}
 
 
-	//debug
+/*	//debug
 	for (auto & f : allFacts_) {
 		std::cout << f.first << std::endl;
 		for (auto & r : f.second.dependeOnRules_) {
 			std::cout << r.getLeft() << std::endl;
 		}
 		std::cout << "======================" << std::endl;
-}
+	}
+*/
 
+	for (auto & r : rules_) {
+		std::cout << r.getleftPostfix_() << std::endl;
+		std::cout << "======================" << std::endl;
+	}
 }
-
-//
-//void ExpertSystem::BC()
-//{
-//	allFacts::const_iterator	fit  = allFacts_.begin();
-//	allFacts::const_iterator	fite = allFacts_.end();
-//
-//	QueriesList_.begin();
-//
-//	for (; fit != fite; fit++) {
-//		solveFact(*fit);
-////		clearUsedRules();
-//	}
-//
-//	return ;
-//
-//
-//
-//
-//}
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//void ExpertSystem::solve() {
-//
-//	allFacts::const_iterator	fit  = allFacts_.begin();
-//	allFacts::const_iterator	fite = allFacts_.end();
-//
-//	for (; fit != fite; fit++) {
-//		solveFact(*fit);
-//		clearUsedRules();
-//	}
-//
-//	return ;
-//}
-//
-//
-//void ExpertSystem::solveFact(Fact const & fact) {
-//
-//	Rules::const_iterator	rit  = Rules_.begin();
-//	Rules::const_iterator	rite = Rules_.end();
-//
-//	for (; rit != rite; rit++) {
-//
-//		std::string		rhs = rit->getRight();
-//
-//		if (rhs.find(fact.getValue()) != std::string::npos) {
-//
-//			if (! ruleUsed(*rit)) {
-//
-//				addUsedRules(*rit);
-//				solveRule(*rit, fact);
-//			}
-//		}
-//	}
-//}
-//
-//bool					ExpertSystem::ruleUsed(Rule const & rule) {
-//	Rules::const_iterator	rit  = getUsedRules().begin();
-//	Rules::const_iterator	rite = getUsedRules().end();
-//
-//	for (; rit != rite; rit++) {
-//		if (rule == *rit)
-//			return true;
-//	}
-//
-//	return false;
-//}
 
 
 void ExpertSystem::printMatrix() {
@@ -239,11 +169,71 @@ void ExpertSystem::printMatrix() {
     }
 }
 
-
-
 void ExpertSystem::resolveFact(char q)
 {
+	Fact & f = allFacts_.at(q);
+	std::cout << "Fact1 " << q << ":" << f << std::endl; //debug
+	if (f.getCondition() == eTRUE) {
+		return;
+	}
+	if (f.getCondition() == eFALSE) {
+		return;
+	}
 
+	if (f.getDependsOnRule().empty()) {
+		/*no depends rule for this fact => false*/
+		std::cout << "----------------------------------Fact " RED << f.getLetter() << RESET " set by " RED "false" RESET << std::endl;
+		f.setCondition(eFALSE);
+		return;
+	}
+
+//	DBG();
+//
+//	if   (f.dependeOnRules_.empty()) std::cout << "empty" << std::endl;
+//	else                             std::cout << "not empty" << std::endl;
+
+	std::cout << "Fact2 " << q << ":" << f << std::endl; //debug
+//	for (auto & r : f.dependeOnRules_) {
+//			std::cout << "dependeOn : " << r.getLeft() << std::endl;
+//		}
+//	std::cout << "+++++++++++++++" << std::endl;
+
+	for ( Rule & r : f.getDependsOnRule() ) {
+//		DBG();
+
+		/*let check all facts in depends on part of rule*/
+		for (const char & c : r.getLeft()) {
+			if (isupper(c) && allFacts_.at(c).getCondition() == eUNKNOWN) {
+				ExpertSystem::resolveFact(c);
+			}
+		}
+
+					std::cout << "dependeOn1 : " << r.getLeft() << std::endl;
+					std::cout << "dependeOn2 : " << r.getleftPostfix_() << std::endl;
+
+		/*in this part all fact needed for resolve this fact is known*/
+		std::string postfix = r.getleftPostfix_();
+
+		/*change Facts to values*/
+		for (char & c : postfix) {
+			if (isupper(c)) {
+				if ( allFacts_.at(c).getCondition() == eTRUE ) {
+					c = '1';
+				} else if ( allFacts_.at(c).getCondition() == eFALSE ) {
+					c = '0';
+				} else {
+					throw ESException("unknown fact in postfix");
+				}
+			}
+		}
+
+		std::cout << "Fact5 " << q << ":" << f << std::endl; //debug
+		std::cout << "Postfix string: "<< postfix << std::endl;
+		for ( char c : postfix) {
+			std::cout << c ;
+		}
+		std::cout << std::endl;
+	}
 }
 
 
@@ -253,6 +243,7 @@ void ExpertSystem::resolveFact(char q)
 
 void ExpertSystem::resolve()
 {
+	std::cout << "----- Resolve fact -----" << std::endl;
 	for (char q : queries_) {
 		resolveFact(q);
 	}
@@ -306,18 +297,18 @@ void ExpertSystem::createRule(std::string &line)
 			 lineMatch[INFERENCE].str(),
 			 lineMatch[RIGHT_PART].str());
 
-    rules_.emplace_back(r);
+	rules_.emplace_back(r);
 
 	for (char c: line) {
 		if (isupper(c)) {
-//			Fact a(c, eUNKNOWN);
 			allFacts_.emplace(c, Fact(c, eUNKNOWN)); // @suppress("Method cannot be resolved")
 		}
-			//allFacts_.emplace(c, Fact(c, eFALSE)); //  (std::make_pair(c, LEFT_SIDE));
 	}
 
 	for (char c: r.getRight()) {
 		if (isupper(c)) {
+//			std::cout << __LINE__ << ":" << " r.getRight() === " << r.getRight() << std::endl;
+//			std::cout << __LINE__ << ":" << " r.getLeft()  === " << r.getLeft()  << std::endl;
 			allFacts_.at(c).addDependsOnRule(r);
 		}
 	}
@@ -340,11 +331,10 @@ bool ExpertSystem::lineInitFacts(std::string &line)
     	std::string lineTmp = lineMatch[1].str();
     	for(std::string::iterator it = lineTmp.begin(); it != lineTmp.end(); ++it) {
     		/*have only A..Z characters*/
-    		initial_.emplace_back(*it);
+//    		initial_.emplace_back(*it);
 
     		allFacts_.at(*it).setCondition(eTRUE);
-    		allFacts_.at(*it).setCondition(eTRUE);
-//    		allFacts_[*it].setIsInitial(eINITIAL);
+    		allFacts_.at(*it).setIsInitial(eINITIAL);
     	}
 
     	/*//debug
@@ -372,9 +362,8 @@ bool ExpertSystem::lineQueryFacts(std::string &line)
     	std::string lineTmp = lineMatch[1].str();
     	for(std::string::iterator it = lineTmp.begin(); it != lineTmp.end(); ++it) {
     		/*have only A..Z characters*/
+    		allFacts_.at(*it).setCondition(eUNKNOWN);
     		queries_.emplace_back(*it);
-
-//    		allFacts_.emplace_back(*it);
     	}
 
     	/*//debug

@@ -33,7 +33,7 @@ public:
     Fact(Fact const &);
     Fact& operator=(Fact const &);
 
-    char             getValue() const;
+    char             getLetter() const;
     enum eFactValue  getCondition() const;
     const bool       getIsInitial() const;
 
@@ -42,14 +42,19 @@ public:
     void setIsInitial(enum initialFactStatus isInit);
     void setCondition(enum eFactValue newStatus);
 
-    void addDependsOnRule(Rule & rule);
 
-    std::vector<Rule> dependeOnRules_; //TODO private? add getter?
+    void addDependsOnRule(Rule & rule);
+    std::vector<Rule> & getDependsOnRule();
+
 
 private:
     char              letter_;
-    enum eFactValue   condition_;
+    eFactValue        condition_;
     bool              initial_; /*UNUSED*/
+
+
+    std::vector<Rule> dependeOnRules_; //TODO private? add getter?
+
 
 
 };
