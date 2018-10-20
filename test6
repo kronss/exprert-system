@@ -1,4 +1,7 @@
-A + !B=> F
-A => !A
+A|C => B
+Z^G => B
+B => C
+C => D
 =A
-?DA
+?D
+

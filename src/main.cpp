@@ -13,7 +13,7 @@ int main(const int argc, char **argv)
     	expertSystem.readInput(argc, argv);
     	expertSystem.readFromFile();
     	expertSystem.prepareEngine();
-
+    	expertSystem.resolve();
 
     } catch (std::exception &e) {
         std::cerr << e.what() << std::endl;
@@ -26,3 +26,18 @@ int main(const int argc, char **argv)
 //	debug("Die hard!\n");
     return 0;
 }
+
+/*
+void fillFactsWithRelevantRules {
+
+	Facts facts;
+	Rules rules;
+
+	for (auto& fact : facts) {
+		for ( auto & rule : rules) {
+			if (hasFactOnRight(fact.letter))
+		}
+	}
+}
+
+*/

@@ -124,16 +124,26 @@ void ExpertSystem::readFromFile()
 void ExpertSystem::prepareEngine()
 {
 //	std::map<char, int> adjacency;
-	printMatrix();
+//	printMatrix();
 
 	for ( char c: initial_ ) {
-//		(allFacts_[c]).setIsInitial(eINITIAL); /*UNUSED*/
-//		(allFacts_[c]).setCondition(eTRUE);
+		allFacts_.at(c).setIsInitial(eINITIAL); /*UNUSED*/
+		allFacts_.at(c).setCondition(eTRUE);
 	}
 
 	for ( char c: queries_ ) {
 //		(allFacts_[c]).setCondition(eUNKNOWN); /*? separate array*/
 	}
+
+
+	//debug
+	for (auto & f : allFacts_) {
+		std::cout << f.first << std::endl;
+		for (auto & r : f.second.dependeOnRules_) {
+			std::cout << r.getLeft() << std::endl;
+		}
+		std::cout << "======================" << std::endl;
+}
 
 }
 
@@ -229,6 +239,31 @@ void ExpertSystem::printMatrix() {
     }
 }
 
+
+
+void ExpertSystem::resolveFact(char q)
+{
+
+}
+
+
+
+
+
+
+void ExpertSystem::resolve()
+{
+	for (char q : queries_) {
+		resolveFact(q);
+	}
+}
+
+
+
+
+
+
+
 //void ExpertSystem::printMatrix() {
 //    for (Rule& r: Rules_) {
 //        for (auto& p : r.getAdjacency()) {
@@ -249,6 +284,8 @@ void ExpertSystem::printMatrix() {
 //}
 
 
+// A => B + C + D
+
 
 void ExpertSystem::createRule(std::string &line)
 {
@@ -265,27 +302,25 @@ void ExpertSystem::createRule(std::string &line)
 //    std::cout << "    ----2st: " << lineMatch[INFERENCE].str()   << std::endl;
 //    std::cout << "    ----3st: " << lineMatch[RIGHT_PART].str()  << std::endl;
 
-    //1st validation
-    //2nd validation
-    //3rd validation
+    Rule r(lineMatch[LEFT_PART].str(),
+			 lineMatch[INFERENCE].str(),
+			 lineMatch[RIGHT_PART].str());
 
-
-    rules_.emplace_back(Rule(lineMatch[LEFT_PART].str(),
-    						 lineMatch[INFERENCE].str(),
-							 lineMatch[RIGHT_PART].str()));
-
-
+    rules_.emplace_back(r);
 
 	for (char c: line) {
 		if (isupper(c)) {
 //			Fact a(c, eUNKNOWN);
-			allFacts_.emplace(c, Fact(c, eUNKNOWN));
+			allFacts_.emplace(c, Fact(c, eUNKNOWN)); // @suppress("Method cannot be resolved")
 		}
 			//allFacts_.emplace(c, Fact(c, eFALSE)); //  (std::make_pair(c, LEFT_SIDE));
 	}
 
-
-
+	for (char c: r.getRight()) {
+		if (isupper(c)) {
+			allFacts_.at(c).addDependsOnRule(r);
+		}
+	}
 }
 
 /*

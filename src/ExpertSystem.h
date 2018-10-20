@@ -18,6 +18,9 @@ public:
         void readInput(int ar, char **av);
         void readFromFile();
         void prepareEngine();
+        void resolve();
+
+
 
         void solve();
         void solveFact(Fact const & fact);
@@ -54,7 +57,7 @@ private:
         void printMatrix();
 
 
-
+        void resolveFact(char q);
 
 
         ExpertSystem();

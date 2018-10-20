@@ -1,6 +1,4 @@
-
 #include "Rule.h"
-
 #include "ESException.h"
 
 #include <iostream>
@@ -9,13 +7,11 @@
 #define ES
 #include "OPN.cpp"
 #undef ES
+
+
 /******************************************************************************/
 /* PUBLIC                                                                     */
 /******************************************************************************/
-
-
-
-//friend
 
 Rule::Rule(std::string left, std::string inference, std::string right)
 : left_(left)
@@ -109,20 +105,6 @@ bool operator==(Rule const lhs, Rule const rhs) {
 /* PRIVATE                                                                    */
 /******************************************************************************/
 
-//std::string const Rule::toString(void) const {
-//	std::ostringstream out;
-//
-//	out << "If: " << getLeft();
-//	out << " - Then: " << getRight() << std::endl;
-//	return out.str();
-//}
-
-//Facts 				Rule::solve(Facts facts) {
-//	std::cout << *this << std::endl;
-//	return facts;
-//}
-
-#include <cctype>
 void Rule::validateExpresion(std::string &str)
 {
 	int alpha = 0;
@@ -157,11 +139,11 @@ void Rule::validateExpresion(std::string &str)
 			throw ESException("invalid rules expresion");
 		}
 	}
+
+	//TODO if 	int alpha = 0;	int oper = 0; int oposite = 0; exception
+
 	return ;
 }
-
-
-
 
 void Rule::createAdjacency()
 {
@@ -178,7 +160,7 @@ void Rule::createAdjacency()
 	}
 }
 
-void Rule::createExpression()
+void Rule::createExpression() /*UNUSED?*/
 {
 	/*before inference character*/
 	for (const char & c: left_) {

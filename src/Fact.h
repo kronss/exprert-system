@@ -22,8 +22,6 @@ enum eFactValue {
 
 class Fact;
 typedef std::map<char, Fact>    allFacts;
-typedef std::vector<int> allFactsRaw;
-//typedef std::map<const char, Fact> allFacts;    /*initial true facts*/
 typedef std::vector<char> Initial;
 typedef std::vector<char> Queries;
 
@@ -44,14 +42,18 @@ public:
     void setIsInitial(enum initialFactStatus isInit);
     void setCondition(enum eFactValue newStatus);
 
+    void addDependsOnRule(Rule & rule);
+
+    std::vector<Rule> dependeOnRules_; //TODO private? add getter?
+
 private:
-    char            letter_;
-    enum eFactValue condition_;
-    bool            initial_; /*UNUSED*/
+    char              letter_;
+    enum eFactValue   condition_;
+    bool              initial_; /*UNUSED*/
+
+
 };
 
-
 std::ostream & operator << (std::ostream & o, Fact const & rhs);
-
 
 #endif /*FACT_H*/

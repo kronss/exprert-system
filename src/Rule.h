@@ -51,6 +51,8 @@ public:
 	Expression const &  getExpressionLeft() const;
 	Expression const &  getExpressionRight() const;
 
+//	bool hasFactOnRight(char factLetter);
+
 
 
 //	void 					setLeft(std::string const & left) { left_ = left; }
@@ -68,6 +70,7 @@ private:
 
 
 	Adjacency adjacency_;
+
 	Expression expressionLeft_;
 	Expression expressionRight_;
 

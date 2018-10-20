@@ -61,6 +61,13 @@ void Fact::setCondition(enum eFactValue newStatus)
 	condition_ = newStatus;
 }
 
+void Fact::addDependsOnRule(Rule & rule)
+{
+	dependeOnRules_.emplace_back(rule);
+}
+
+
+
 bool Fact::operator == ( const char& rhs ) const
 {
     return getValue() == rhs;
