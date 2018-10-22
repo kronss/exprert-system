@@ -5,7 +5,7 @@
 #include <cctype> /*isupper*/
 
 #define ES
-#include "OPN.cpp"
+#include "InfixToPostfix.cpp"
 //#undef ES
 
 
@@ -36,10 +36,12 @@ Rule::Rule(std::string left, std::string inference, std::string right)
 }
 
 Rule::Rule(Rule const & rhs)
-: left_(rhs.left_),
-  inference_(rhs.inference_),
-  right_(rhs.right_),
-  adjacency_(rhs.adjacency_)
+: left_(rhs.left_)
+, inference_(rhs.inference_)
+, right_(rhs.right_)
+, adjacency_(rhs.adjacency_)
+, leftPostfix_(rhs.leftPostfix_)
+, rightPostfix_(rhs.leftPostfix_)
 {}
 
 Rule::~Rule(void)

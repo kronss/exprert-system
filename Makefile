@@ -30,7 +30,7 @@ $(EXEC): $(OBJ)
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp | $(OBJ_DIR)
 	$(CC) $(CCFLAGS) -o $@ -c $< $(INC)
 
-$(OBJ_DIR)/Rule.o: $(SRC_DIR)/Rule.cpp $(SRC_DIR)/OPN.cpp | $(OBJ_DIR)
+$(OBJ_DIR)/Rule.o: $(SRC_DIR)/Rule.cpp $(SRC_DIR)/InfixToPostfix.cpp | $(OBJ_DIR)
 	$(CC) $(CCFLAGS) -o $@ -c $< $(INC)
 
 

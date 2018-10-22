@@ -208,8 +208,8 @@ void ExpertSystem::resolveFact(char q)
 			}
 		}
 
-					std::cout << "dependeOn1 : " << r.getLeft() << std::endl;
-					std::cout << "dependeOn2 : " << r.getleftPostfix_() << std::endl;
+		std::cout << "dependeOn1 : " << r.getLeft() << std::endl;
+		std::cout << "dependeOn2 : " << r.getleftPostfix_() << std::endl;
 
 		/*in this part all fact needed for resolve this fact is known*/
 		std::string postfix = r.getleftPostfix_();
@@ -222,10 +222,13 @@ void ExpertSystem::resolveFact(char q)
 				} else if ( allFacts_.at(c).getCondition() == eFALSE ) {
 					c = '0';
 				} else {
-					throw ESException("unknown fact in postfix");
+					std::cout << "Fact: postfix " << postfix << ":" << c << std::endl; //debug
+					throw ESException("Unknown fact in postfix");
 				}
 			}
 		}
+
+		resolvePostfixExpression();
 
 		std::cout << "Fact5 " << q << ":" << f << std::endl; //debug
 		std::cout << "Postfix string: "<< postfix << std::endl;
