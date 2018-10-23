@@ -1,5 +1,4 @@
-A + B => C
-C + D => E
-E | C => Z
-=AB
-?Z
+!A + !B => C
+C | D => !E
+=
+?EY

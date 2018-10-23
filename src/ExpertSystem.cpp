@@ -16,6 +16,8 @@
 #include <algorithm>
 
 
+#define ES
+#include "PostfixEvaluation.cpp"
 //#include <boost/regex.hpp>
 
 
@@ -146,10 +148,10 @@ void ExpertSystem::prepareEngine()
 	}
 */
 
-	for (auto & r : rules_) {
-		std::cout << r.getleftPostfix_() << std::endl;
-		std::cout << "======================" << std::endl;
-	}
+//	for (auto & r : rules_) {
+//		std::cout << r.getleftPostfix_() << std::endl;
+//		std::cout << "======================" << std::endl;
+//	}
 }
 
 
@@ -228,7 +230,13 @@ void ExpertSystem::resolveFact(char q)
 			}
 		}
 
-		resolvePostfixExpression();
+
+		if (EvaluatePostfix(postfix)) {
+			f.setCondition(eTRUE);
+		} else {
+			f.setCondition(eFALSE);
+		}
+
 
 		std::cout << "Fact5 " << q << ":" << f << std::endl; //debug
 		std::cout << "Postfix string: "<< postfix << std::endl;
@@ -330,12 +338,16 @@ bool ExpertSystem::lineInitFacts(std::string &line)
     	std::cout << "OK initial: " << lineMatch[1].str() << std::endl; //debug;
     	ret = true;
 
+
+
+
     	/*create initial facts*/
     	std::string lineTmp = lineMatch[1].str();
     	for(std::string::iterator it = lineTmp.begin(); it != lineTmp.end(); ++it) {
     		/*have only A..Z characters*/
 //    		initial_.emplace_back(*it);
 
+			allFacts_.emplace(*it, Fact(*it, eTRUE, eINITIAL)); //, eINITIAL)); // @suppress("Method cannot be resolved")
     		allFacts_.at(*it).setCondition(eTRUE);
     		allFacts_.at(*it).setIsInitial(eINITIAL);
     	}
@@ -365,6 +377,7 @@ bool ExpertSystem::lineQueryFacts(std::string &line)
     	std::string lineTmp = lineMatch[1].str();
     	for(std::string::iterator it = lineTmp.begin(); it != lineTmp.end(); ++it) {
     		/*have only A..Z characters*/
+			allFacts_.emplace(*it, Fact(*it, eUNKNOWN)); // @suppress("Method cannot be resolved")
     		allFacts_.at(*it).setCondition(eUNKNOWN);
     		queries_.emplace_back(*it);
     	}

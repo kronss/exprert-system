@@ -92,7 +92,7 @@ bool IsNumericDigit(char C)
 // Function to verify whether a character is operator symbol or not.
 bool IsOperator(char C)
 {
-	if (C == '+' || C == '-' || C == '*' || C == '/')
+	if (C == '+' || C == '|' || C== '^' || C == '!')
 		return true;
 
 	return false;
@@ -101,11 +101,11 @@ bool IsOperator(char C)
 // Function to perform an operation and return output.
 int PerformOperation(char operation, int operand1, int operand2)
 {
-	if      (operation == '+') return operand1 + operand2;
-	else if (operation == '-') return operand1 - operand2;
-	else if (operation == '*') return operand1 * operand2;
-	else if (operation == '/') return operand1 / operand2;
+	if      (operation == '+') return operand1 & operand2;
+	else if (operation == '|') return operand1 | operand2;
+	else if (operation == '^') return operand1 ^ operand2;
+	else if (operation == '!') return !(operand1 & operand2); //hack hard to handle unary operators
 
-	else std::cout << "Unexpected Error" << std::endl;
+	else throw std::runtime_error("unknown operator");
 	return -1;
 }

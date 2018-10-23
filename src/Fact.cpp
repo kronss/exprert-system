@@ -8,20 +8,19 @@
 /******************************************************************************/
 /* PUBLIC                                                                     */
 /******************************************************************************/
-Fact::Fact(char value, enum eFactValue condition, enum initialFactStatus init)
-: letter_(value)
-, initial_(init)
+Fact::Fact(char letter, enum eFactValue condition, enum initialFactStatus init)
+: letter_(letter)
 , condition_(condition)
+, initial_(init)
 {}
 
 Fact::~Fact()
 {}
 
 Fact::Fact(Fact const &rval)
-:
-initial_(rval.initial_),
-condition_(rval.condition_),
-letter_(rval.letter_)
+: letter_(rval.letter_)
+, condition_(rval.condition_)
+, initial_(rval.initial_)
 {}
 
 Fact& Fact::operator = (Fact const &rval)
@@ -54,8 +53,14 @@ void Fact::setIsInitial(enum initialFactStatus isInit)
 	initial_ = isInit;
 }
 
+#define YELLOW  "\033[33m"      /* Yellow */
+#define RESET   "\033[0m"
+
+
 void Fact::setCondition(enum eFactValue newStatus)
 {
+	std::cout << __func__ << "Fact " << getLetter() << " new value "<< YELLOW << (newStatus == eTRUE ? "True" : newStatus == eFALSE ? "False" : "Unknown") << RESET << std::endl;
+
 	if (eUNKNOWN == newStatus && eINITIAL == initial_) return;
 
 	condition_ = newStatus;
