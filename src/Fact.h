@@ -7,6 +7,7 @@
 #include <list>
 #include "Rule.h"
 #include <iostream>
+#include "cuteСolors.h"
 
 
 enum initialFactStatus {

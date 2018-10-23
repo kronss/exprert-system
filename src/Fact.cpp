@@ -53,10 +53,6 @@ void Fact::setIsInitial(enum initialFactStatus isInit)
 	initial_ = isInit;
 }
 
-#define YELLOW  "\033[33m"      /* Yellow */
-#define RESET   "\033[0m"
-
-
 void Fact::setCondition(enum eFactValue newStatus)
 {
 	std::cout << __func__ << "Fact " << getLetter() << " new value "<< YELLOW << (newStatus == eTRUE ? "True" : newStatus == eFALSE ? "False" : "Unknown") << RESET << std::endl;
