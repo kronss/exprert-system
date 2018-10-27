@@ -23,16 +23,15 @@ Rule::Rule(std::string left, std::string inference, std::string right)
 //, adjacency_(createAdjency(fullString))
 {
 	validateExpresion(left_);
-//	validateInference();       //TODO!!!!!!!!!!
-//	validateRight();
+	validateExpresion(right_);
+
+//	HACK_checkOperatorsRight(right_);
 
 	createAdjacency();
+	createExpression(); /*UNUSED?*/
 
-	createExpression();
-
-
-	std::cout << "infix:   " << left_ << std::endl;
-	std::cout << "postfix: " << leftPostfix_ << std::endl;
+	std::cout << "infix:   " << left_ << std::endl; //debug
+	std::cout << "postfix: " << leftPostfix_ << std::endl; //debug
 }
 
 Rule::Rule(Rule const & rhs)
@@ -125,7 +124,7 @@ bool operator==(Rule const lhs, Rule const rhs) {
 void Rule::validateExpresion(std::string &str)
 {
 	int alpha = 0;
-	int oper = 1;
+	int oper = 1; /*fix cases "+B"*/
 	int oposite = 0;
 
 	if (str.empty())
@@ -157,11 +156,12 @@ void Rule::validateExpresion(std::string &str)
 		}
 	}
 
-	/*case: A+B+*/
+	/* case:
+	 *  A+B+
+	 *  empty
+	 * */
 	if (alpha != 1)
 		throw ESException("invalid rules expresion");
-
-	//TODO if 	int alpha = 0;	int oper = 0; int oposite = 0; exception
 
 	return ;
 }

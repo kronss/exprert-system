@@ -85,15 +85,6 @@ bool Fact::operator == ( const char& rhs ) const
 /* PRIVATE                                                                    */
 /******************************************************************************/
 
-
-
-
-
-
-
-//std::ostream &operator << (std::ostream & o, const Victim &rhs)
-
-
 std::ostream & operator << (std::ostream & o, Fact const & rhs) {
 	o << rhs.getLetter() << " == " <<  (rhs.getCondition() == eTRUE ? "true" : rhs.getCondition() == eFALSE ? "false" : "unknown"); // << " = " << static_cast<int>(rhs.getCondition());
 	return o;

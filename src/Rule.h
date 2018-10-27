@@ -96,7 +96,7 @@ private:
 //validation
 	void validateExpresion(std::string &str);
 
-
+	void HACK_checkOperators(std::string &str);
 
 //	= delete;
 };

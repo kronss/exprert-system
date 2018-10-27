@@ -29,7 +29,7 @@ typedef std::vector<char> Queries;
 
 class Fact {
 public:
-	Fact(char letter, enum eFactValue condition, enum initialFactStatus init = eDEFAULT);
+    Fact(char letter, enum eFactValue condition, enum initialFactStatus init = eDEFAULT);
     ~Fact();
 
     Fact(Fact const &);
@@ -44,21 +44,15 @@ public:
     void setIsInitial(enum initialFactStatus isInit);
     void setCondition(enum eFactValue newStatus);
 
-
     void addDependsOnRule(Rule & rule);
     std::vector<Rule> & getDependsOnRule();
-
 
 private:
     char              letter_;
     eFactValue        condition_;
     bool              initial_; /*UNUSED*/
 
-
-    std::vector<Rule> dependeOnRules_; //TODO private? add getter?
-
-
-
+    std::vector<Rule> dependeOnRules_;
 };
 
 std::ostream & operator << (std::ostream & o, Fact const & rhs);

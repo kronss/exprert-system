@@ -265,7 +265,7 @@ void ExpertSystem::printResults()
 		} else if (eUNKNOWN == condition) {
 			std::cout << YELLOW << "unknown";
 		} else {
-			throw "Unknown fact condition";
+			throw ESException("Unknown fact condition");
 		}
 		std::cout << RESET << std::endl;
 	}
@@ -279,12 +279,17 @@ void ExpertSystem::printResults()
 void ExpertSystem::createRule(std::string &line)
 {
                          /*(-------1st------)(--2nd-)(---3rd----)*/
-    std::regex   tokens("^([\\(\\)A-Z!+|^]*)(<=>|=>)([A-Z!+|^]*)$"); /*tokenyzer*/
+//    std::regex   tokens("^([\\(\\)A-Z!+|^]*)(<=>|=>)([A-Z!+|^]*)$"); /*tokenyzer*/
+    std::regex   tokens("^([\\(\\)A-Z!+|^]*)(<=>|=>)([A-Z+]*)$"); /*tokenyzer*/
     std::smatch  lineMatch;
     std::string  tmp;
     eInference   inference;
 
-    regex_search(line, lineMatch, tokens);
+    if (regex_search(line, lineMatch, tokens)) {
+    	;
+    } else {
+    	throw ESException("Invalid characters in rule");
+    }
 
 //    std::cout << "    ----0st: " << lineMatch[FULL_STRING].str() << std::endl;
 //    std::cout << "    ----1st: " << lineMatch[LEFT_PART].str()   << std::endl;
