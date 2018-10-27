@@ -1,10 +1,10 @@
-C=>E
-A+B+C=>D
-A|B=>C
-A+!B=>F
-C|!G=>H
-V^W=>X
-A+B=>Y+Z
+B + !C => A 
 
-=A
-?DA
+#With =   #, A should be false. 
+#With =B  #, A should be true. 
+#With =C  #, A should be false. 
+#With =BC #, A should be false. 
+
+ 
+?A 
+

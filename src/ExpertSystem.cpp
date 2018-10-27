@@ -214,16 +214,13 @@ void ExpertSystem::resolveFact(char q)
 
 		if (EvaluatePostfix(postfix)) {
 			f.setCondition(eTRUE);
+			break;
 		} else {
 			f.setCondition(eFALSE);
 		}
 
 //		std::cout << "Fact5 " << q << ":" << f << std::endl; //debug
 //		std::cout << "Postfix string: "<< postfix << std::endl;
-		for ( char c : postfix) {
-			std::cout << c ;
-		}
-		std::cout << std::endl;
 	}
 }
 

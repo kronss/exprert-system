@@ -1,11 +1,10 @@
-C => E
-A + B + C => D
-A | B => C
-A + !B => F
-C | !G => H
-V ^ W => X
-A + B => Y + Z
-C | D => X | V
-E + F => !V
-=A
-?B
+B => A 
+C => A 
+
+#With =   #A should be false. 
+#With =B  #A should be true.     ///////////ERROR?
+#With =C  #A should be true. 
+#With =BC #A should be true. 
+ 
+?A 
+
