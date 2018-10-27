@@ -59,7 +59,7 @@ std::string InfixToPostfix(std::string &expression)
 
 	S.push('('); // Push a left parenthesis ‘(‘ onto the stack.
 
-	for (int i = 0;i< expression.length(); i++) {
+	for (size_t i = 0;i< expression.length(); i++) {
 
 		// Scanning each character from left.
 		// If character is a delimiter, move on.

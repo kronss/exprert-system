@@ -1,8 +1,8 @@
 EXEC=expert
 
 CC = clang++
-CCFLAGS = -std=c++11 -ferror-limit=1
-#CCFLAGS = -Wall -Wextra -Werror -std=c++11 -ferror-limit=5
+#CCFLAGS = -std=c++11
+CCFLAGS = -Wall -Wextra -Werror -std=c++11 -ferror-limit=5
 
 SRC_FILE_NAME = main.cpp           \
 				ExpertSystem.cpp   \

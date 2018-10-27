@@ -38,4 +38,6 @@ private:
     ESException &operator=(const ESException &rvl) = delete;
 };
 
+std::ostream & operator << (std::ostream & o, ESException const & rhs);
+
 #endif /*ES_EXCEPTION_HPP*/

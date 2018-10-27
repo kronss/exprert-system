@@ -10,9 +10,9 @@ N => M
 
 
 #With
-#=DEIJOP #, AFKP is true. 
-#With
- =DEIJP#, AFP is true, K is false. 
+#
+=DEIJOP #, AFKP is true. 
+#With =DEIJP#, AFP is true, K is false. 
 
 
 #[INITIAL FACTS HERE] 

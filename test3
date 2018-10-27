@@ -6,7 +6,8 @@ B => C
 #With =   #A should be false. 
 #With =D  #A should be true. 
 #With =E  #A should be true. 
-#With =DE #A should be false. 
+#With 
+=DE #A should be false. 
 
 ?A 
 

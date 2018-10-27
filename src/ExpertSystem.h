@@ -79,4 +79,7 @@ private:
         ExpertSystem& operator=(ExpertSystem const &) = delete;
 };
 
+std::ostream & operator << (std::ostream & o, ExpertSystem const & rhs);
+
+
 #endif /*EXPERT_SYSTEM_H*/

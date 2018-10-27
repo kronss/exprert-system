@@ -27,7 +27,7 @@
 /* PUBLIC                                                                     */
 /******************************************************************************/
 
-void ExpertSystem::init(int ar, char **av)
+void ExpertSystem::init(int , char **)
 {}
 
 ExpertSystem& ExpertSystem::Instance()
@@ -191,7 +191,7 @@ void ExpertSystem::resolveFact(char q)
 		/*let check all facts in depends on part of rule*/
 		for (const char & c : r.getLeft()) {
 			if (isupper(c) && allFacts_.at(c).getCondition() == eUNKNOWN) {
-				ExpertSystem::resolveFact(c);
+				ExpertSystem::resolveFact(c);  //recursion
 			}
 		}
 
@@ -215,7 +215,8 @@ void ExpertSystem::resolveFact(char q)
 		if (EvaluatePostfix(postfix)) {
 			f.setCondition(eTRUE);
 			break;
-		} else {
+		}
+		else {
 			f.setCondition(eFALSE);
 		}
 
@@ -263,7 +264,7 @@ void ExpertSystem::createRule(std::string &line)
     std::regex   tokens("^([\\(\\)A-Z!+|^]*)(<=>|=>)([A-Z+]*)$"); /*tokenyzer*/
     std::smatch  lineMatch;
     std::string  tmp;
-    eInference   inference;
+//    eInference   inference;
 
     if (regex_search(line, lineMatch, tokens)) {
     	;
@@ -444,3 +445,6 @@ void ExpertSystem::usage()
 	std::cerr << "" << std::endl;
 }
 
+std::ostream & operator << (std::ostream & o, ExpertSystem const & ) {
+	return o;
+}

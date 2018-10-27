@@ -40,7 +40,7 @@ int EvaluatePostfix(std::string expression)
 	// Declaring a Stack from Standard template library in C++.
 	std::stack<int> S;
 
-	for (int i = 0; i < expression.length();i++) {
+	for (size_t i = 0; i < expression.length();i++) {
 		// Scanning each character from left.
 		// If character is a delimitter, move on.
 		if (expression[i] == ' ' || expression[i] == ',') continue;

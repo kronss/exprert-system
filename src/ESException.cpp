@@ -70,3 +70,8 @@ const char *ESException::what() const noexcept
 {
 	return runtime_error::what();
 }
+
+std::ostream & operator << (std::ostream & o, ESException const & )
+{
+	return o;
+}

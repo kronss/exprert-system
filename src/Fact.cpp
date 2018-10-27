@@ -42,7 +42,7 @@ enum eFactValue Fact::getCondition() const
 	return condition_;
 }
 
-const bool Fact::getIsInitial() const
+bool Fact::getIsInitial() const
 {
 	return initial_;
 }

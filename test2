@@ -3,7 +3,6 @@ B + C => A
 D | E => B 
 B => C 
 
-#[INITIAL FACTS HERE]
 #With = #should be false. 
 #With =D#, A should be true. 
 #With =E#, A should be true. 

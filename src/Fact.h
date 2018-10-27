@@ -37,7 +37,7 @@ public:
 
     char             getLetter() const;
     enum eFactValue  getCondition() const;
-    const bool       getIsInitial() const;
+    bool       getIsInitial() const;
 
     bool operator == ( const char& rhs ) const;
 

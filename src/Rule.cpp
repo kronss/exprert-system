@@ -38,9 +38,9 @@ Rule::Rule(Rule const & rhs)
 : left_(rhs.left_)
 , inference_(rhs.inference_)
 , right_(rhs.right_)
-, adjacency_(rhs.adjacency_)
 , leftPostfix_(rhs.leftPostfix_)
 , rightPostfix_(rhs.leftPostfix_)
+, adjacency_(rhs.adjacency_)
 {}
 
 Rule::~Rule(void)
@@ -200,9 +200,9 @@ eInference Rule::initInference(std::string & inference)
 	eInference ret;
 
     if (inference == "=>") {
-    	inference = THEN;
+    	ret = THEN;
     } else if (inference == "<=>") {
-    	inference = IF_AND_ONLY_IF;
+    	ret = IF_AND_ONLY_IF;
         throw ESException("Not supported inference `<=>`");
     } else {
         throw ESException("Not supported inference");
@@ -211,8 +211,7 @@ eInference Rule::initInference(std::string & inference)
     return ret;
 }
 
-
-//std::ostream & operator<<(std::ostream & out, Rule const & rhs) {
-//	out << rhs.toString();
-//	return out;
-//}
+std::ostream & operator << (std::ostream & o, Rule const & )
+{
+	return o;
+}

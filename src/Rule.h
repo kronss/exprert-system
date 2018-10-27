@@ -55,17 +55,6 @@ public:
 	std::string const & getleftPostfix_() const;
 	std::string         getRightPostfix_() const;
 
-
-//	bool hasFactOnRight(char factLetter);
-
-
-
-//	void 					setLeft(std::string const & left) { left_ = left; }
-//	void 					setRight(std::string const & right) { right_ = right; }
-
-//	Fact 					solve(Facts facts);
-
-
 private:
 	std::string left_;
 	eInference inference_;
@@ -101,11 +90,6 @@ private:
 //	= delete;
 };
 
-
-
-// stream overload
-//std::ostream & 	operator<<(std::ostream & o, Rule const & rule);
-//bool			operator==(Rule const lhs, Rule const rhs);
-
+std::ostream & operator << (std::ostream & o, Rule const & rhs);
 
 #endif /*RULE_CLASS*/
