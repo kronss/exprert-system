@@ -47,6 +47,9 @@ int EvaluatePostfix(std::string expression)
 		// If character is operator, pop two elements from stack, perform operation and push the result back.
 		else if (IsOperator(expression[i])) {
 			// Pop two operands.
+			if (S.size() < 2) {
+				throw std::runtime_error("pop on empty stack");
+			}
 			int operand2 = S.top(); S.pop();
 			int operand1 = S.top();	S.pop();
 
@@ -79,6 +82,9 @@ int EvaluatePostfix(std::string expression)
 		}
 	}
 	// If expression is in correct format, Stack will finally have one element. This will be the output.
+	if (S.size() != 1) {
+		std::runtime_error("Incomplete result on stack");
+	}
 	return S.top();
 }
 
