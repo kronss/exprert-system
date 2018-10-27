@@ -80,7 +80,6 @@ void ExpertSystem::readFromFile()
     int lineNbr = 0;
     std::string line;
 
-
     DBG("File is %s", fileName_.c_str());
 
     if (!RegularFile(fileName_.c_str())) {
@@ -95,7 +94,7 @@ void ExpertSystem::readFromFile()
         lineNbr++;
         removeUnusedCharacters(line);
 
-        std::cout << lineNbr << ". " << line << std::endl; //debug
+//        std::cout << lineNbr << ". " << line << std::endl; //debug
         if (line.empty()) {
             continue ;
         } else if (lineInitFacts(line)) {
@@ -230,7 +229,7 @@ void ExpertSystem::resolveFact(char q)
 
 void ExpertSystem::resolve()
 {
-	std::cout << "----- Resolve fact -----" << std::endl; //debug
+//	std::cout << "----- Resolve fact -----" << std::endl; //debug
 	for (char q : queries_) {
 		resolveFact(q);
 	}
@@ -340,7 +339,7 @@ bool ExpertSystem::lineQueryFacts(std::string &line)
     std::regex test2("^\\?([A-Z]{0,26}$)");
 
     if (regex_search(line, lineMatch, test2)) {
-    	std::cout << "OK Query: " << lineMatch[1].str() << std::endl; //debug;
+//    	std::cout << "OK Query: " << lineMatch[1].str() << std::endl; //debug;
     	ret = true;
 
     	/*create query list*/
