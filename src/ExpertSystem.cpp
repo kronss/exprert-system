@@ -21,7 +21,7 @@
 //#include <boost/regex.hpp>
 
 
-#define DEBUG 1
+#define DEBUG 0
 
 /******************************************************************************/
 /* PUBLIC                                                                     */
@@ -99,19 +99,18 @@ void ExpertSystem::readFromFile()
         if (line.empty()) {
             continue ;
         } else if (lineInitFacts(line)) {
-        	//change state PC
+        	setSystemStage(eTRUE_FACTS_TIME);
         } else if (lineQueryFacts(line)) {
-        	//change state PC
+        	setSystemStage(eQUERY_FACTS_TIME);
         } else if (lineValid(line)) {
-            //push rules;
-//        	std::cout << lineNbr << ". dick" << std::endl; //debug
-            createRule(line);
+        	setSystemStage(eRULES_TIME);
+        	createRule(line);
         } else {
-        	continue;
-//        	std::cout << lineNbr << ". dick" << std::endl; //debug
-//            throw ESException(BAD_FILE, fileName_.c_str()); //TODO: rework this
+        	throw ESException("Bad input");
+//        	continue;
         }
     }
+	setSystemStage(eEXECUTE);
 
 //    std::cout << "------------------------------------" << std::endl;
 //    for (auto const& i : Rules_) {
@@ -230,13 +229,11 @@ void ExpertSystem::resolveFact(char q)
 			}
 		}
 
-
 		if (EvaluatePostfix(postfix)) {
 			f.setCondition(eTRUE);
 		} else {
 			f.setCondition(eFALSE);
 		}
-
 
 		std::cout << "Fact5 " << q << ":" << f << std::endl; //debug
 		std::cout << "Postfix string: "<< postfix << std::endl;
@@ -247,55 +244,45 @@ void ExpertSystem::resolveFact(char q)
 	}
 }
 
-
-
-
-
-
 void ExpertSystem::resolve()
 {
-	std::cout << "----- Resolve fact -----" << std::endl;
+	std::cout << "----- Resolve fact -----" << std::endl; //debug
 	for (char q : queries_) {
 		resolveFact(q);
 	}
 }
 
+void ExpertSystem::printResults()
+{
+	for (char c : queries_) {
+		eFactValue condition = allFacts_.at(c).getCondition();
 
-
-
-
-
-
-//void ExpertSystem::printMatrix() {
-//    for (Rule& r: Rules_) {
-//        for (auto& p : r.getAdjacency()) {
-//            std::cout << p.first << p.second << std::endl;
-//        }
-//    }
-//}
+		std::cout << "Fact " << CYAN << c << RESET << " is ";
+		if (eTRUE == condition) {
+			std::cout << GREEN << "true";
+		} else if (eFALSE == condition) {
+			std::cout << RED << "false";
+		} else if (eUNKNOWN == condition) {
+			std::cout << YELLOW << "unknown";
+		} else {
+			throw "Unknown fact condition";
+		}
+		std::cout << RESET << std::endl;
+	}
+}
 
 
 /******************************************************************************/
 /* PRIVATE                                                                    */
 /******************************************************************************/
 
-
-//void ExpertSystem::createHuckN1()
-//{
-//
-//}
-
-
-// A => B + C + D
-
-
 void ExpertSystem::createRule(std::string &line)
 {
-    std::smatch lineMatch;
-                     /*(   1st    )( 2nd  )(   3rd    )*/
-    std::regex tokens("^([\\(\\)A-Z!+|^]*)(<=>|=>)([A-Z!+|^]*)$"); /*tokenyzer*/
-    std::string tmp;
-    enum eInference inference;
+                         /*(-------1st------)(--2nd-)(---3rd----)*/
+    std::regex   tokens("^([\\(\\)A-Z!+|^]*)(<=>|=>)([A-Z!+|^]*)$"); /*tokenyzer*/
+    std::smatch  lineMatch;
+    std::string  tmp;
+    eInference   inference;
 
     regex_search(line, lineMatch, tokens);
 
@@ -318,8 +305,6 @@ void ExpertSystem::createRule(std::string &line)
 
 	for (char c: r.getRight()) {
 		if (isupper(c)) {
-//			std::cout << __LINE__ << ":" << " r.getRight() === " << r.getRight() << std::endl;
-//			std::cout << __LINE__ << ":" << " r.getLeft()  === " << r.getLeft()  << std::endl;
 			allFacts_.at(c).addDependsOnRule(r);
 		}
 	}
@@ -335,18 +320,14 @@ bool ExpertSystem::lineInitFacts(std::string &line)
     std::regex initialFactsRegExp("^=([A-Z]{0,26}$)");
 
     if (regex_search(line, lineMatch, initialFactsRegExp)) {
-    	std::cout << "OK initial: " << lineMatch[1].str() << std::endl; //debug;
+//    	std::cout << "OK initial: " << lineMatch[1].str() << std::endl; //debug;
     	ret = true;
-
-
-
 
     	/*create initial facts*/
     	std::string lineTmp = lineMatch[1].str();
     	for(std::string::iterator it = lineTmp.begin(); it != lineTmp.end(); ++it) {
     		/*have only A..Z characters*/
-//    		initial_.emplace_back(*it);
-
+    		//TODO: remove duplication
 			allFacts_.emplace(*it, Fact(*it, eTRUE, eINITIAL)); //, eINITIAL)); // @suppress("Method cannot be resolved")
     		allFacts_.at(*it).setCondition(eTRUE);
     		allFacts_.at(*it).setIsInitial(eINITIAL);
@@ -395,49 +376,15 @@ bool ExpertSystem::lineQueryFacts(std::string &line)
 bool ExpertSystem::lineValid(std::string &line)
 {
 	bool ret = false;
-//    std::smatch lineMatch;
 
-//    std::regex emptyLineRegexp("^\\s*$");
     std::regex usedCharacters("^[A-Z<=>+!?()|^]*$");
-//    std::regex test("^(!?[A-Z]\\+|\\||\\^!?[A-Z]*)(=>|<=>)(!?[A-Z](\\+!?[A-Z])*)$");
 
     if (regex_match(line, usedCharacters)) {
-    	std::cout << "line valid : " << line << std::endl;
+//    	std::cout << "line valid : " << line << std::endl;
     	ret = true;
     }
 
     return ret;
-//v1
-//    std::regex test1("^(!?[A-Z])(=>|<=>)(!?[A-Z](\\+!?[A-Z])*)$"); //    Для тех где слева одна буква
-//    std::regex test2("^(!?[A-Z](\\+!?[A-Z])+)(=>|<=>)(!?[A-Z](\\+!?[A-Z])*)$"); // Для плюсов
-//    std::regex test3("^(!?[A-Z](\\+|\\||\\^)!?[A-Z])(=>|<=>)(!?[A-Z](\\+!?[A-Z])*)$"); // Для других операций
-//
-//    if        (regex_search(line, lineMatch, test1)) {
-////        std::cout << "OK1: " << line << std::endl; //debug
-//    	goto done;
-//    } else if (regex_search(line, lineMatch, test2)) {
-////        std::cout << "OK2: " << line << std::endl; //debug
-//    	goto done;
-//    } else if (regex_search(line, lineMatch, test3)) {
-////        std::cout << "OK3: " << line << std::endl; //debug
-//    	goto done;
-//    } else {
-////        std::cout << "KO: " << line << std::endl; //debug
-////        throw ESException(INVAL_TOKEN, line); /*TODO: uncoment*/
-//        goto err; /*TODO: remove hack*/
-//    }
-
-//    std::cout << "    0st: " << lineMatch[0].str() << std::endl;
-//    std::cout << "    1st: " << lineMatch[1].str() << std::endl;
-//    std::cout << "    2st: " << lineMatch[2].str() << std::endl;
-//    std::cout << "    3st: " << lineMatch[3].str() << std::endl;
-//    std::cout << "    4st: " << lineMatch[4].str() << std::endl;
-//    std::cout << "    5st: " << lineMatch[5].str() << std::endl;
-
-//err:
-//	ret = false;
-//done:
-//    return ret;
 }
 
 void ExpertSystem::removeUnusedCharacters(std::string & line)
@@ -451,8 +398,9 @@ void ExpertSystem::removeUnusedCharacters(std::string & line)
     line.erase(std::remove_if(line.begin(), line.end(), isspace), line.end());
 }
 
-ExpertSystem::ExpertSystem() :
-verbose_(false)
+ExpertSystem::ExpertSystem()
+: verbose_(false)
+, stage_(eINIT)
 {
     DBG("Expert born");
 }
@@ -472,7 +420,42 @@ bool ExpertSystem::RegularFile(const char *fileName)
     return !!S_ISREG(fileStat.st_mode);
 }
 
+void ExpertSystem::setSystemStage(enum SystemStage stage)
+{
+	switch (stage) {
+
+	default:
+		throw ESException("Not expected stage in Expert System");
+
+	case eINIT:
+		throw ESException("Unexpected init stage in Expert System");
+
+	case eRULES_TIME:
+		if (!(eRULES_TIME == stage_ || eINIT == stage_))
+			throw ESException("Unexpected rule in Expert System");
+		break;
+
+	case eTRUE_FACTS_TIME:
+		if (eRULES_TIME != stage_)
+			throw ESException("Unexpected True facts in Expert System");
+		break;
+
+	case eQUERY_FACTS_TIME:
+		if (eTRUE_FACTS_TIME != stage_)
+			throw ESException("Unexpected query facts in Expert System");
+		break;
+
+	case eEXECUTE:
+		if (eQUERY_FACTS_TIME != stage_)
+			throw ESException("Unexpected execute stage in Expert System");
+		break;
+	}
+
+	stage_ = stage;
+}
+
 void ExpertSystem::usage()
 {
 	std::cerr << "" << std::endl;
 }
+

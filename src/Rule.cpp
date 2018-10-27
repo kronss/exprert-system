@@ -157,6 +157,10 @@ void Rule::validateExpresion(std::string &str)
 		}
 	}
 
+	/*case: A+B+*/
+	if (alpha != 1)
+		throw ESException("invalid rules expresion");
+
 	//TODO if 	int alpha = 0;	int oper = 0; int oposite = 0; exception
 
 	return ;

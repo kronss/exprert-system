@@ -8,6 +8,8 @@
 #include "Rule.h"
 #include <iostream>
 
+#include "cuteColors.h"
+
 
 enum initialFactStatus {
 	eDEFAULT = 0,      /*false*/
