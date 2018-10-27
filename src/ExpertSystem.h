@@ -3,8 +3,8 @@
 
 #include <string>
 
+#include "cuteColors.h"
 #include "Fact.h"
-#include "cuteСolors.h"
 
 enum SystemStage {
 	eINIT               = 0,
@@ -25,6 +25,7 @@ public:
         void readFromFile();
         void prepareEngine();
         void resolve();
+        void printResults();
 
 
 

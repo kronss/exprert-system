@@ -106,11 +106,11 @@ void ExpertSystem::readFromFile()
         	setSystemStage(eRULES_TIME);
         	createRule(line);
         } else {
-        	continue;
-//        	std::cout << lineNbr << ". dick" << std::endl; //debug
-//            throw ESException(BAD_FILE, fileName_.c_str()); //TODO: rework this
+        	throw ESException("Bad input");
+//        	continue;
         }
     }
+	setSystemStage(eEXECUTE);
 
 //    std::cout << "------------------------------------" << std::endl;
 //    for (auto const& i : Rules_) {
@@ -229,13 +229,11 @@ void ExpertSystem::resolveFact(char q)
 			}
 		}
 
-
 		if (EvaluatePostfix(postfix)) {
 			f.setCondition(eTRUE);
 		} else {
 			f.setCondition(eFALSE);
 		}
-
 
 		std::cout << "Fact5 " << q << ":" << f << std::endl; //debug
 		std::cout << "Postfix string: "<< postfix << std::endl;
@@ -248,11 +246,31 @@ void ExpertSystem::resolveFact(char q)
 
 void ExpertSystem::resolve()
 {
-	std::cout << "----- Resolve fact -----" << std::endl;
+	std::cout << "----- Resolve fact -----" << std::endl; //debug
 	for (char q : queries_) {
 		resolveFact(q);
 	}
 }
+
+void ExpertSystem::printResults()
+{
+	for (char c : queries_) {
+		eFactValue condition = allFacts_.at(c).getCondition();
+
+		std::cout << "Fact " << CYAN << c << RESET << " is ";
+		if (eTRUE == condition) {
+			std::cout << GREEN << "true";
+		} else if (eFALSE == condition) {
+			std::cout << RED << "false";
+		} else if (eUNKNOWN == condition) {
+			std::cout << YELLOW << "unknown";
+		} else {
+			throw "Unknown fact condition";
+		}
+		std::cout << RESET << std::endl;
+	}
+}
+
 
 /******************************************************************************/
 /* PRIVATE                                                                    */
@@ -404,8 +422,6 @@ bool ExpertSystem::RegularFile(const char *fileName)
 
 void ExpertSystem::setSystemStage(enum SystemStage stage)
 {
-	//return;  //TODO::
-
 	switch (stage) {
 
 	default:

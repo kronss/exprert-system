@@ -2,7 +2,8 @@
 #include "ESException.h"
 #include "debug.h"
 #include <iostream>
-#include "cuteСolors.h"
+
+#include "cuteColors.h"
 
 #define DEBUG 0
 
@@ -15,6 +16,7 @@ int main(const int argc, char **argv)
     	expertSystem.readFromFile();
     	expertSystem.prepareEngine();
     	expertSystem.resolve();
+    	expertSystem.printResults();
 
     } catch (std::exception &e) {
         std::cerr << RED << "\tERROR:\t" RESET << e.what() << std::endl ;
