@@ -19,7 +19,7 @@
 //};
 
 
-class ESException : public std::exception {
+class ESException : public std::runtime_error{
 public:
 //    ESException(const Reason &reason, const std::string &details);
 //    ESException(const Reason &reason);

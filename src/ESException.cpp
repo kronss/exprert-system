@@ -52,30 +52,21 @@
 
 
 ESException::ESException(const ESException &cpy)
-: details_(cpy.details_)
+: runtime_error(cpy.details_), details_(cpy.details_)
 {}
 
 ESException::~ESException()
 {}
 
 ESException::ESException(const std::string &details)
-: details_(details)
+: runtime_error(details), details_(details)
 {}
 
 ESException::ESException()
-: details_(NO_STR)
+: runtime_error(NO_STR), details_(NO_STR)
 {}
 
 const char *ESException::what() const noexcept
 {
-	std::string what;
-
-	if (!details_.empty()) {
-		what = details_;
-	}
-//	else {
-//		what = "Unknown error:";
-//	}
-
-	return what.c_str();
+	return runtime_error::what();
 }
