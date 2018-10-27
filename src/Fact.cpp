@@ -55,7 +55,7 @@ void Fact::setIsInitial(enum initialFactStatus isInit)
 
 void Fact::setCondition(enum eFactValue newStatus)
 {
-	std::cout << __func__ << "Fact " << getLetter() << " new value "<< YELLOW << (newStatus == eTRUE ? "True" : newStatus == eFALSE ? "False" : "Unknown") << RESET << std::endl;
+//	std::cout << __func__ << ": Fact " << getLetter() << " new value "<< YELLOW << (newStatus == eTRUE ? "True" : newStatus == eFALSE ? "False" : "Unknown") << RESET << std::endl; //debug
 
 	if (eUNKNOWN == newStatus && eINITIAL == initial_) return;
 

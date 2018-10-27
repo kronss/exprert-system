@@ -153,7 +153,6 @@ void ExpertSystem::prepareEngine()
 //	}
 }
 
-
 void ExpertSystem::printMatrix() {
     for (Rule & r: rules_) {
         for (auto & p : r.getAdjacency()) {
@@ -173,7 +172,7 @@ void ExpertSystem::printMatrix() {
 void ExpertSystem::resolveFact(char q)
 {
 	Fact & f = allFacts_.at(q);
-	std::cout << "Fact1 " << q << ":" << f << std::endl; //debug
+//	std::cout << "Fact1 " << q << ":" << f << std::endl; //debug
 	if (f.getCondition() == eTRUE) {
 		return;
 	}
@@ -183,24 +182,12 @@ void ExpertSystem::resolveFact(char q)
 
 	if (f.getDependsOnRule().empty()) {
 		/*no depends rule for this fact => false*/
-		std::cout << "----------------------------------Fact " RED << f.getLetter() << RESET " set by " RED "false" RESET << std::endl;
+//		std::cout << "----------------------------------Fact " RED << f.getLetter() << RESET " set by " RED "false" RESET << std::endl; //debug
 		f.setCondition(eFALSE);
 		return;
 	}
 
-//	DBG();
-//
-//	if   (f.dependeOnRules_.empty()) std::cout << "empty" << std::endl;
-//	else                             std::cout << "not empty" << std::endl;
-
-	std::cout << "Fact2 " << q << ":" << f << std::endl; //debug
-//	for (auto & r : f.dependeOnRules_) {
-//			std::cout << "dependeOn : " << r.getLeft() << std::endl;
-//		}
-//	std::cout << "+++++++++++++++" << std::endl;
-
 	for ( Rule & r : f.getDependsOnRule() ) {
-//		DBG();
 
 		/*let check all facts in depends on part of rule*/
 		for (const char & c : r.getLeft()) {
@@ -208,9 +195,6 @@ void ExpertSystem::resolveFact(char q)
 				ExpertSystem::resolveFact(c);
 			}
 		}
-
-		std::cout << "dependeOn1 : " << r.getLeft() << std::endl;
-		std::cout << "dependeOn2 : " << r.getleftPostfix_() << std::endl;
 
 		/*in this part all fact needed for resolve this fact is known*/
 		std::string postfix = r.getleftPostfix_();
@@ -223,7 +207,7 @@ void ExpertSystem::resolveFact(char q)
 				} else if ( allFacts_.at(c).getCondition() == eFALSE ) {
 					c = '0';
 				} else {
-					std::cout << "Fact: postfix " << postfix << ":" << c << std::endl; //debug
+//					std::cout << "Fact: postfix " << postfix << ":" << c << std::endl; //debug
 					throw ESException("Unknown fact in postfix");
 				}
 			}
@@ -235,8 +219,8 @@ void ExpertSystem::resolveFact(char q)
 			f.setCondition(eFALSE);
 		}
 
-		std::cout << "Fact5 " << q << ":" << f << std::endl; //debug
-		std::cout << "Postfix string: "<< postfix << std::endl;
+//		std::cout << "Fact5 " << q << ":" << f << std::endl; //debug
+//		std::cout << "Postfix string: "<< postfix << std::endl;
 		for ( char c : postfix) {
 			std::cout << c ;
 		}

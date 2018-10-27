@@ -30,8 +30,8 @@ Rule::Rule(std::string left, std::string inference, std::string right)
 	createAdjacency();
 	createExpression(); /*UNUSED?*/
 
-	std::cout << "infix:   " << left_ << std::endl; //debug
-	std::cout << "postfix: " << leftPostfix_ << std::endl; //debug
+//	std::cout << "infix:   " << left_ << std::endl; //debug
+//	std::cout << "postfix: " << leftPostfix_ << std::endl; //debug
 }
 
 Rule::Rule(Rule const & rhs)
@@ -102,11 +102,6 @@ std::string Rule::getRightPostfix_() const
 {
 	return rightPostfix_;
 }
-
-
-
-
-
 
 //etc
 bool operator==(Rule const lhs, Rule const rhs) {
